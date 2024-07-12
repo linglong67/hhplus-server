@@ -1,12 +1,10 @@
 package io.hhplus.server.infrastructure.reservation.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "reservation_ticket")
 @NoArgsConstructor
 public class ReservationTicketEntity {
     @Id

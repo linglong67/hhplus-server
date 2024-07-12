@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Entity
+@Table(name = "queue")
 @NoArgsConstructor
 public class QueueEntity {
     @Id

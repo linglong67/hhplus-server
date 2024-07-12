@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
 @Entity
+@Table(name = "concertSeat")
 @NoArgsConstructor
 public class ConcertSeatEntity {
     @Id

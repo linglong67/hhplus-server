@@ -14,11 +14,12 @@ public class UserRepositoryImpl implements UserRepository {
 
     @Override
     public Optional<User> findById(long userId) {
-        return Optional.empty();
+        return userRepository.findById(userId).map(UserEntity::toDomain);
     }
 
     @Override
     public User save(User user) {
-        return null;
+        UserEntity entity = UserEntity.from(user);
+        return UserEntity.toDomain(userRepository.save(entity));
     }
 }
