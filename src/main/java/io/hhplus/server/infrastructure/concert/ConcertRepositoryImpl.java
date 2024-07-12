@@ -38,4 +38,14 @@ public class ConcertRepositoryImpl implements ConcertRepository {
     public ConcertSeat assignSeat(Long concertSeatId) {
         return null;
     }
+
+    @Override
+    public void update(ConcertSeat concertSeat) {
+
+    }
+
+    @Override
+    public ConcertSeat findConcertSeat(Long releaseTarget) {
+        return null;
+    }
 }

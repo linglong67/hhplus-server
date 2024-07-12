@@ -16,4 +16,8 @@ public class ConcertSeat {
         AVAILABLE,
         OCCUPIED
     }
+
+    public void release() {
+        this.status = Status.AVAILABLE;
+    }
 }

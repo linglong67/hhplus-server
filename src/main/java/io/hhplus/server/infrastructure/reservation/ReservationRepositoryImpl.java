@@ -7,6 +7,9 @@ import io.hhplus.server.infrastructure.reservation.repository.ReservationTicketJ
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 @Repository
 @RequiredArgsConstructor
 public class ReservationRepositoryImpl implements ReservationRepository {
@@ -26,5 +29,10 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     @Override
     public Reservation update(Reservation reservation) {
         return null;
+    }
+
+    @Override
+    public List<Reservation> findAllByStatusIsAndCreatedAtBefore(String status, LocalDateTime validationTime) {
+        return reservationRepository.findAllByStatusIsAndCreatedAtBefore(status, validationTime);
     }
 }

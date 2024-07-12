@@ -39,4 +39,12 @@ public class ConcertService {
             throw new IllegalStateException("이미 선택된 좌석이 포함되어 있음");
         }
     }
+
+    public void releaseSeatHolds(List<Long> releaseTargets) {
+        for (Long releaseTarget : releaseTargets) {
+            ConcertSeat concertSeat = concertRepository.findConcertSeat(releaseTarget);
+            concertSeat.release();
+            concertRepository.update(concertSeat);
+        }
+    }
 }
