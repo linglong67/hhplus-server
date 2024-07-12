@@ -17,4 +17,14 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     public Reservation reserve(String token, Reservation request) {
         return null;
     }
+
+    @Override
+    public Reservation findById(long reservationId) {
+        return null;
+    }
+
+    @Override
+    public Reservation update(Reservation reservation) {
+        return null;
+    }
 }

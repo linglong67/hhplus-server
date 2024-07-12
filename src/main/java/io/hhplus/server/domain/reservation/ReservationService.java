@@ -11,4 +11,10 @@ public class ReservationService {
     public Reservation reserve(String token, Reservation reservation) {
         return reservationRepository.reserve(token, reservation);
     }
+
+    public Reservation updateReservationStatus(long reservationId) {
+        Reservation reservation = reservationRepository.findById(reservationId);
+        reservation.updateStatus(Reservation.Status.PAID);
+        return reservationRepository.update(reservation);
+    }
 }

@@ -8,7 +8,6 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class QueueService {
-
     private final QueueRepository queueRepository;
 
     public Queue generateToken(long userId) {
@@ -32,9 +31,15 @@ public class QueueService {
     public void verifyQueue(long userId, String token) {
         Queue queue = getQueue(userId, token);
 
-        if(queue.getStatus() != Queue.Status.ACTIVE) {
+        if (queue.getStatus() != Queue.Status.ACTIVE) {
             throw new IllegalStateException("활성 토큰이 아님");
         }
+    }
+
+    public void expireToken(long userId, String token) {
+        Queue queue = getQueue(userId, token);
+        queue.expire();
+        queueRepository.save(queue);
     }
 
     private Queue getQueue(long userId, String token) {

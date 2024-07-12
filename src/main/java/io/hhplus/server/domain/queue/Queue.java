@@ -24,4 +24,8 @@ public class Queue {
         this.token = UUID.randomUUID().toString();
         this.status = Status.WAITING;
     }
+
+    public void expire() {
+        this.status = Status.EXPIRED;
+    }
 }

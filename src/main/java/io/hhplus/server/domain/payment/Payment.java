@@ -1,21 +1,17 @@
-package io.hhplus.server.domain.reservation;
+package io.hhplus.server.domain.payment;
 
 import lombok.Builder;
 import lombok.Getter;
 
-import java.util.List;
-
 @Getter
 @Builder
-public class Reservation {
-    private Long id;
+public class Payment {
+    private Long reservationId;
     private Long userId;
-    private Long concertScheduleId;
-    private List<Long> concertSeatIds;
     private Status status;
+    private int paidPrice;
 
     public enum Status {
-        RESERVED,
         PAID,
         CANCELED
     }
