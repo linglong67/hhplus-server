@@ -22,7 +22,6 @@ public class ConcertSeatDto {
         return ConcertSeatDto.builder()
                              .concertSeatId(concertSeat.getId())
                              .concertScheduleId(concertSeat.getConcertScheduleId())
-                             .placeId(concertSeat.getPlaceId())
                              .seatId(concertSeat.getSeatId())
                              .seatNo(concertSeat.getSeatNo())
                              .status(concertSeat.getStatus())

@@ -14,6 +14,7 @@ import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -119,8 +120,8 @@ class ConcertServiceTest {
         List<Long> releaseTargets = Arrays.asList(1L, 2L);
         ConcertSeat seat1 = Mockito.mock(ConcertSeat.class);
         ConcertSeat seat2 = Mockito.mock(ConcertSeat.class);
-        when(concertRepository.findConcertSeat(1L)).thenReturn(seat1);
-        when(concertRepository.findConcertSeat(2L)).thenReturn(seat2);
+        when(concertRepository.findConcertSeat(1L)).thenReturn(Optional.of(seat1));
+        when(concertRepository.findConcertSeat(2L)).thenReturn(Optional.of(seat2));
 
         //when
         concertService.releaseSeatHolds(releaseTargets);

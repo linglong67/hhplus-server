@@ -77,7 +77,6 @@ public class QueueIntegrationTest {
                                   .userId(2L)
                                   .token("newToken")
                                   .status(Queue.Status.WAITING)
-                                  .activatedAt(LocalDateTime.now().minusMinutes(31))
                                   .build();
         Queue queue = queueRepository.save(waitingQueue);
 

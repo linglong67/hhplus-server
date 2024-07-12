@@ -4,6 +4,7 @@ import io.hhplus.server.domain.concert.Concert;
 import io.hhplus.server.domain.concert.ConcertRepository;
 import io.hhplus.server.domain.concert.ConcertSchedule;
 import io.hhplus.server.domain.concert.ConcertSeat;
+import io.hhplus.server.infrastructure.concert.entity.ConcertSeatEntity;
 import io.hhplus.server.infrastructure.concert.repository.ConcertJpaRepository;
 import io.hhplus.server.infrastructure.concert.repository.ConcertScheduleJpaRepository;
 import io.hhplus.server.infrastructure.concert.repository.ConcertSeatJpaRepository;
@@ -11,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -45,7 +47,7 @@ public class ConcertRepositoryImpl implements ConcertRepository {
     }
 
     @Override
-    public ConcertSeat findConcertSeat(Long releaseTarget) {
-        return null;
+    public Optional<ConcertSeat> findConcertSeat(Long releaseTarget) {
+        return concertSeatRepository.findById(releaseTarget).map(ConcertSeatEntity::toDomain);
     }
 }

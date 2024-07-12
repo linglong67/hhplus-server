@@ -8,7 +8,6 @@ import lombok.Getter;
 public class ConcertSeat {
     private Long id;
     private Long concertScheduleId;
-    private Long placeId;
     private Long seatId;
     private Long seatNo;
     private Status status;

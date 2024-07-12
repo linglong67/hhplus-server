@@ -2,13 +2,14 @@ package io.hhplus.server.domain.reservation;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public interface ReservationRepository {
-    Reservation reserve(String token, Reservation request);
+    Reservation reserve(Reservation request);
 
-    Reservation findById(long reservationId);
+    Optional<Reservation> findById(long reservationId);
 
     Reservation update(Reservation reservation);
 
-    List<Reservation> findAllByStatusIsAndCreatedAtBefore(String status, LocalDateTime validationTime);
+    List<Reservation> findAllByStatusIsAndCreatedAtBefore(Reservation.Status status, LocalDateTime validationTime);
 }

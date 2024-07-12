@@ -1,6 +1,7 @@
 package io.hhplus.server.domain.concert;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface ConcertRepository {
     List<Concert> findAll();
@@ -13,5 +14,5 @@ public interface ConcertRepository {
 
     void update(ConcertSeat concertSeat);
 
-    ConcertSeat findConcertSeat(Long releaseTarget);
+    Optional<ConcertSeat> findConcertSeat(Long releaseTarget);
 }

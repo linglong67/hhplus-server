@@ -21,7 +21,7 @@ public class ReservationFacade {
     public ReservationDto reserveSeat(String token, ReservationDto dto) {
         queueService.verifyQueue(dto.getUserId(), token);
         concertService.assignSeats(dto.getConcertSeatIds());
-        return ReservationDto.toDto(reservationService.reserve(token, dto.toDomain()));
+        return ReservationDto.toDto(reservationService.reserve(dto.toDomain()));
     }
 
     // 좌석 임시 배정 만료 (스케줄러)

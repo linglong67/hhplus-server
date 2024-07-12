@@ -8,5 +8,5 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ReservationJpaRepository extends JpaRepository<ReservationEntity, Long> {
-    List<Reservation> findAllByStatusIsAndCreatedAtBefore(String status, LocalDateTime validationTime);
+    List<ReservationEntity> findAllByStatusIsAndCreatedAtBefore(Reservation.Status status, LocalDateTime validationTime);
 }

@@ -5,6 +5,7 @@ import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -42,9 +43,17 @@ public class ConcertService {
 
     public void releaseSeatHolds(List<Long> releaseTargets) {
         for (Long releaseTarget : releaseTargets) {
-            ConcertSeat concertSeat = concertRepository.findConcertSeat(releaseTarget);
-            concertSeat.release();
-            concertRepository.update(concertSeat);
+            Optional<ConcertSeat> concertSeat = concertRepository.findConcertSeat(releaseTarget);
+
+            if (concertSeat.isPresent()) {
+                ConcertSeat seat = concertSeat.get();
+                seat.release();
+                concertRepository.update(seat);
+            }
         }
+    }
+
+    public Optional<ConcertSeat> findConcertSeatById(Long concertSeatId) {
+        return concertRepository.findConcertSeat(concertSeatId);
     }
 }

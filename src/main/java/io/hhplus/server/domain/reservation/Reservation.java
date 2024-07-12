@@ -3,6 +3,7 @@ package io.hhplus.server.domain.reservation;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -13,6 +14,7 @@ public class Reservation {
     private Long concertScheduleId;
     private List<Long> concertSeatIds;
     private Status status;
+    private LocalDateTime createdAt;
 
     public enum Status {
         RESERVED,

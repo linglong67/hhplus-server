@@ -3,7 +3,6 @@ package io.hhplus.server.service;
 import io.hhplus.server.domain.reservation.Reservation;
 import io.hhplus.server.domain.reservation.ReservationRepository;
 import io.hhplus.server.domain.reservation.ReservationService;
-import org.assertj.core.util.Arrays;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -12,10 +11,10 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -32,13 +31,13 @@ class ReservationServiceTest {
         //given
         String token = "testToken";
         Reservation reservation = Reservation.builder().build();
-        when(reservationRepository.reserve(token, reservation)).thenReturn(reservation);
+        when(reservationRepository.reserve(reservation)).thenReturn(reservation);
 
         //when
-        Reservation result = reservationService.reserve(token, reservation);
+        Reservation result = reservationService.reserve(reservation);
 
         //then
-        verify(reservationRepository).reserve(token, reservation);
+        verify(reservationRepository).reserve(reservation);
         assertThat(result).isEqualTo(reservation);
     }
 
@@ -48,7 +47,7 @@ class ReservationServiceTest {
         long reservationId = 1L;
         Reservation reservation = Reservation.builder().build();
         reservation.updateStatus(Reservation.Status.RESERVED);
-        when(reservationRepository.findById(reservationId)).thenReturn(reservation);
+        when(reservationRepository.findById(reservationId)).thenReturn(Optional.of(reservation));
         when(reservationRepository.update(any(Reservation.class))).thenReturn(reservation);
 
         //when
@@ -66,13 +65,13 @@ class ReservationServiceTest {
         Reservation reservation1 = Reservation.builder().build();
         Reservation reservation2 = Reservation.builder().build();
         List<Reservation> reservations = List.of(reservation1, reservation2);
-        when(reservationRepository.findAllByStatusIsAndCreatedAtBefore(anyString(), any(LocalDateTime.class))).thenReturn(reservations);
+        when(reservationRepository.findAllByStatusIsAndCreatedAtBefore(any(Reservation.Status.class), any(LocalDateTime.class))).thenReturn(reservations);
 
         //when
         List<Reservation> result = reservationService.findUnpaidUsersWithin10MinutesOfReservation();
 
         //then
-        verify(reservationRepository).findAllByStatusIsAndCreatedAtBefore(anyString(), any(LocalDateTime.class));
+        verify(reservationRepository).findAllByStatusIsAndCreatedAtBefore(any(Reservation.Status.class), any(LocalDateTime.class));
         assertThat(result).isEqualTo(reservations);
     }
 
