@@ -41,7 +41,7 @@ public class QueueRepositoryImpl implements QueueRepository {
     }
 
     @Override
-    public List<Queue> findAllByStatusIsAndIdGreaterThanOrderByIdAsc(String name, long lastActiveUserTokenId, PageRequest pageRequest) {
-        return queueRepository.findAllByStatusIsAndIdGreaterThanOrderByIdAsc(name, lastActiveUserTokenId, pageRequest);
+    public List<Queue> findAllByStatusIsAndIdGreaterThanOrderByIdAsc(String status, long lastActiveUserTokenId, PageRequest pageRequest) {
+        return queueRepository.findAllByStatusIsAndIdGreaterThanOrderByIdAsc(status, lastActiveUserTokenId, pageRequest);
     }
 }

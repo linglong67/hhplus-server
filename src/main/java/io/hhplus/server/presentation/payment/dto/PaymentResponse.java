@@ -16,7 +16,7 @@ public class PaymentResponse {
         return PaymentResponse.builder()
                               .reservationId(dto.getReservationId())
                               .userId(dto.getUserId())
-                              .status(dto.getStatus().toString())
+                              .status(dto.getStatus().name())
                               .build();
     }
 }

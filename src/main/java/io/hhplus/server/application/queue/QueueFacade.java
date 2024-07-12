@@ -2,7 +2,6 @@ package io.hhplus.server.application.queue;
 
 import io.hhplus.server.domain.queue.Queue;
 import io.hhplus.server.domain.queue.QueueService;
-import io.hhplus.server.domain.reservation.ReservationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +12,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class QueueFacade {
     private final QueueService queueService;
-    private final ReservationService reservationService;
 
     // 토큰 발급
     @Transactional

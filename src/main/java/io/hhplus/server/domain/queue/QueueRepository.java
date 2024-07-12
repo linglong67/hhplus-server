@@ -17,5 +17,5 @@ public interface QueueRepository {
 
     long countAllByStatusIs(String name);
 
-    List<Queue> findAllByStatusIsAndIdGreaterThanOrderByIdAsc(String name, long lastActiveUserTokenId, PageRequest of);
+    List<Queue> findAllByStatusIsAndIdGreaterThanOrderByIdAsc(String status, long lastActiveUserTokenId, PageRequest of);
 }

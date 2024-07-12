@@ -10,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/concerts")
@@ -26,7 +25,7 @@ public class ConcertController {
         return concertFacade.getConcerts(userId, token)
                             .stream()
                             .map(ConcertResponse::toResponse)
-                            .collect(Collectors.toList());
+                            .toList();
     }
 
     @GetMapping("{concertId}/available-dates")
@@ -37,7 +36,7 @@ public class ConcertController {
         return concertFacade.getAvailableDates(concertId, userId, token)
                             .stream()
                             .map(ConcertScheduleResponse::toResponse)
-                            .collect(Collectors.toList());
+                            .toList();
     }
 
     @GetMapping("{concertId}/schedules/{concertScheduleId}/available-seats")
@@ -49,6 +48,6 @@ public class ConcertController {
         return concertFacade.getAvailableSeats(concertId, concertScheduleId, userId, token)
                             .stream()
                             .map(ConcertSeatResponse::toResponse)
-                            .collect(Collectors.toList());
+                            .toList();
     }
 }

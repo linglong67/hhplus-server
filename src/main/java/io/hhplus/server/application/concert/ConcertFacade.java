@@ -7,7 +7,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 @RequiredArgsConstructor
@@ -22,7 +21,7 @@ public class ConcertFacade {
         return concertService.getConcerts()
                              .stream()
                              .map(ConcertDto::toDto)
-                             .collect(Collectors.toList());
+                             .toList();
     }
 
     // 콘서트 예약가능 날짜 조회 (D-1 기준)
@@ -32,7 +31,7 @@ public class ConcertFacade {
         return concertService.getAvailableDates(concertId)
                              .stream()
                              .map(ConcertScheduleDto::toDto)
-                             .collect(Collectors.toList());
+                             .toList();
     }
 
     // 콘서트 예약가능 좌석 조회
@@ -42,6 +41,6 @@ public class ConcertFacade {
         return concertService.getAvailableSeats(concertId, concertScheduleId)
                              .stream()
                              .map(ConcertSeatDto::toDto)
-                             .collect(Collectors.toList());
+                             .toList();
     }
 }
