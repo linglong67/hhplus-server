@@ -29,6 +29,14 @@ public class QueueService {
         return getQueue(userId, token);
     }
 
+    public void verifyQueue(long userId, String token) {
+        Queue queue = getQueue(userId, token);
+
+        if(queue.getStatus() != Queue.Status.ACTIVE) {
+            throw new IllegalStateException("활성 토큰이 아님");
+        }
+    }
+
     private Queue getQueue(long userId, String token) {
         Optional<Queue> queue = queueRepository.getQueue(userId, token);
 
