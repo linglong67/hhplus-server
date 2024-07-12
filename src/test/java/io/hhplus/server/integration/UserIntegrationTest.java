@@ -24,7 +24,7 @@ class UserIntegrationTest {
     private User testUser;
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         testUser = User.builder().name("test").point(1000).build();
         testUser = userRepository.save(testUser);
     }

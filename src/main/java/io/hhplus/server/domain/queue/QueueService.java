@@ -59,13 +59,13 @@ public class QueueService {
     }
 
     public List<Queue> findUsersToActivate() {
-        int currentEntries = (int) queueRepository.countAllByStatusIs(Queue.Status.ACTIVE.name());
+        int currentEntries = (int) queueRepository.countAllByStatusIs(Queue.Status.ACTIVE);
         int entryLimit = MAX_QUEUE_SIZE - currentEntries;
 
         long lastActiveUserTokenId = queueRepository.getLastActiveUserTokenId();
 
         return queueRepository.findAllByStatusIsAndIdGreaterThanOrderByIdAsc(
-                Queue.Status.WAITING.name(), lastActiveUserTokenId, PageRequest.of(0, entryLimit));
+                Queue.Status.WAITING, lastActiveUserTokenId, PageRequest.of(0, entryLimit));
     }
 
     public void activateTokens(List<Queue> queueList) {
@@ -76,7 +76,7 @@ public class QueueService {
     }
 
     public List<Queue> findActiveUsersForMoreThan30Minutes() {
-        return queueRepository.findAllByStatusIsAndActivatedAtBefore(Queue.Status.ACTIVE.name(), LocalDateTime.now().minusMinutes(MAX_ACTIVE_MINUTES));
+        return queueRepository.findAllByStatusIsAndActivatedAtBefore(Queue.Status.ACTIVE, LocalDateTime.now().minusMinutes(MAX_ACTIVE_MINUTES));
     }
 
     public void expireTokens(List<Queue> queueList) {

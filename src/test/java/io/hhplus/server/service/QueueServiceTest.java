@@ -135,10 +135,10 @@ class QueueServiceTest {
         long lastActiveUserTokenId = 5L;
         List<Queue> expectedQueues = List.of(Queue.builder().build(), Queue.builder().build());
 
-        when(queueRepository.countAllByStatusIs(Queue.Status.ACTIVE.name())).thenReturn((long) currentEntries);
+        when(queueRepository.countAllByStatusIs(Queue.Status.ACTIVE)).thenReturn((long) currentEntries);
         when(queueRepository.getLastActiveUserTokenId()).thenReturn(lastActiveUserTokenId);
         when(queueRepository.findAllByStatusIsAndIdGreaterThanOrderByIdAsc(
-                eq(Queue.Status.WAITING.name()), eq(lastActiveUserTokenId), any(PageRequest.class)
+                eq(Queue.Status.WAITING), eq(lastActiveUserTokenId), any(PageRequest.class)
         )).thenReturn(expectedQueues);
 
         //when
@@ -168,7 +168,7 @@ class QueueServiceTest {
         //given
         List<Queue> expectedQueues = List.of(Queue.builder().build(), Queue.builder().build());
         when(queueRepository.findAllByStatusIsAndActivatedAtBefore(
-                eq(Queue.Status.ACTIVE.name()), any(LocalDateTime.class)
+                eq(Queue.Status.ACTIVE), any(LocalDateTime.class)
         )).thenReturn(expectedQueues);
 
         //when

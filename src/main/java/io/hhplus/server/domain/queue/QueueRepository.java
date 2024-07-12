@@ -13,9 +13,13 @@ public interface QueueRepository {
 
     long getLastActiveUserTokenId();
 
-    List<Queue> findAllByStatusIsAndActivatedAtBefore(String status, LocalDateTime validationTime);
+    List<Queue> findAllByStatusIsAndActivatedAtBefore(Queue.Status status, LocalDateTime validationTime);
 
-    long countAllByStatusIs(String name);
+    long countAllByStatusIs(Queue.Status status);
 
-    List<Queue> findAllByStatusIsAndIdGreaterThanOrderByIdAsc(String status, long lastActiveUserTokenId, PageRequest of);
+    List<Queue> findAllByStatusIsAndIdGreaterThanOrderByIdAsc(Queue.Status status, long lastActiveUserTokenId, PageRequest of);
+
+    void deleteAll();
+
+    Optional<Queue> findById(Long id);
 }

@@ -17,12 +17,13 @@ public class QueueRepositoryImpl implements QueueRepository {
 
     @Override
     public Optional<Queue> getQueue(long userId, String token) {
-        return Optional.empty();
+        return queueRepository.findByUserIdAndToken(userId, token);
     }
 
     @Override
     public Queue save(Queue queue) {
-        return null;
+        QueueEntity entity = QueueEntity.from(queue);
+        return QueueEntity.toDomain(queueRepository.save(entity));
     }
 
     @Override
@@ -31,17 +32,27 @@ public class QueueRepositoryImpl implements QueueRepository {
     }
 
     @Override
-    public List<Queue> findAllByStatusIsAndActivatedAtBefore(String status, LocalDateTime validationTime) {
+    public List<Queue> findAllByStatusIsAndActivatedAtBefore(Queue.Status status, LocalDateTime validationTime) {
         return queueRepository.findAllByStatusIsAndActivatedAtBefore(status, validationTime);
     }
 
     @Override
-    public long countAllByStatusIs(String name) {
-        return queueRepository.countAllByStatusIs(name);
+    public long countAllByStatusIs(Queue.Status status) {
+        return queueRepository.countAllByStatusIs(status);
     }
 
     @Override
-    public List<Queue> findAllByStatusIsAndIdGreaterThanOrderByIdAsc(String status, long lastActiveUserTokenId, PageRequest pageRequest) {
+    public List<Queue> findAllByStatusIsAndIdGreaterThanOrderByIdAsc(Queue.Status status, long lastActiveUserTokenId, PageRequest pageRequest) {
         return queueRepository.findAllByStatusIsAndIdGreaterThanOrderByIdAsc(status, lastActiveUserTokenId, pageRequest);
+    }
+
+    @Override
+    public void deleteAll() {
+        queueRepository.deleteAll();
+    }
+
+    @Override
+    public Optional<Queue> findById(Long id) {
+        return queueRepository.findById(id).map(QueueEntity::toDomain);
     }
 }

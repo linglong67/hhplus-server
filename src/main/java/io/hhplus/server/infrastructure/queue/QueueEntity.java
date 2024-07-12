@@ -1,5 +1,6 @@
 package io.hhplus.server.infrastructure.queue;
 
+import io.hhplus.server.domain.queue.Queue;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
@@ -15,6 +16,30 @@ public class QueueEntity {
 
     private Long userId;
     private String token;
-    private String status;
+
+    @Enumerated(EnumType.STRING)
+    private Queue.Status status;
+
     private LocalDateTime activatedAt;
+
+    public static QueueEntity from(Queue queue) {
+        QueueEntity entity = new QueueEntity();
+        entity.id = queue.getId();
+        entity.userId = queue.getUserId();
+        entity.token = queue.getToken();
+        entity.status = queue.getStatus();
+        entity.activatedAt = queue.getActivatedAt();
+
+        return entity;
+    }
+
+    public static Queue toDomain(QueueEntity entity) {
+        return Queue.builder()
+                    .id(entity.id)
+                    .userId(entity.userId)
+                    .token(entity.token)
+                    .status(entity.status)
+                    .activatedAt(entity.activatedAt)
+                    .build();
+    }
 }
