@@ -1,11 +1,19 @@
 spring:
   application:
     name: hhplus-server
+#  datasource:
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://localhost:3306/hhplus_concert
+#    username:
+#    password:
   datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/hhplus_concert
-    username:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb
+    username: sa
     password:
+  h2:
+    console:
+      enabled: true
   jpa:
     properties:
       hibernate:
