@@ -33,4 +33,9 @@ public class ConcertRepositoryImpl implements ConcertRepository {
     public List<ConcertSeat> getAvailableSeats(long concertId, long concertScheduleId) {
         return List.of();
     }
+
+    @Override
+    public ConcertSeat assignSeat(Long concertSeatId) {
+        return null;
+    }
 }

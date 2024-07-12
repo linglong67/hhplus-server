@@ -8,4 +8,6 @@ public interface ConcertRepository {
     List<ConcertSchedule> getAvailableDates(long concertId);
 
     List<ConcertSeat> getAvailableSeats(long concertId, long concertScheduleId);
+
+    ConcertSeat assignSeat(Long concertSeatId);
 }
