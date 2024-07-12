@@ -1,8 +1,10 @@
 package io.hhplus.server.domain.user;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 public class User {
     private Long id;
     private String name;

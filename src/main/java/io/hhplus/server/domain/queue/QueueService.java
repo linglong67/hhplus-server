@@ -17,7 +17,7 @@ public class QueueService {
     private static final int MAX_ACTIVE_MINUTES = 30;
 
     public Queue generateToken(long userId) {
-        Queue queue = new Queue();
+        Queue queue = Queue.builder().build();
         queue.generate(userId);
 
         return queueRepository.save(queue);

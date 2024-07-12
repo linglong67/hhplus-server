@@ -1,11 +1,13 @@
 package io.hhplus.server.domain.queue;
 
+import lombok.Builder;
 import lombok.Getter;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
+@Builder
 public class Queue {
     private Long id;
     private Long userId;

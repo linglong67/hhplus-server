@@ -1,8 +1,10 @@
 package io.hhplus.server.domain.concert;
 
+import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@Builder
 public class ConcertSeat {
     private Long id;
     private Long concertScheduleId;
