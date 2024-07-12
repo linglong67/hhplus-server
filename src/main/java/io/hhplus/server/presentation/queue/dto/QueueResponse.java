@@ -16,7 +16,7 @@ public class QueueResponse {
         return QueueResponse.builder()
                             .userId(dto.getUserId())
                             .token(dto.getToken())
-                            .status(dto.getStatus().toString())
+                            .status(dto.getStatus().name())
                             .queueOrder(dto.getQueueOrder())
                             .build();
     }

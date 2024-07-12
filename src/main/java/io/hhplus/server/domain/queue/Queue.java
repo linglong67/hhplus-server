@@ -25,6 +25,10 @@ public class Queue {
         this.status = Status.WAITING;
     }
 
+    public void activate() {
+        this.status = Status.ACTIVE;
+    }
+
     public void expire() {
         this.status = Status.EXPIRED;
     }

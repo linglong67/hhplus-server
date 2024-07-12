@@ -1,5 +1,9 @@
 package io.hhplus.server.domain.queue;
 
+import org.springframework.data.domain.PageRequest;
+
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 public interface QueueRepository {
@@ -8,4 +12,10 @@ public interface QueueRepository {
     Queue save(Queue queue);
 
     long getLastActiveUserTokenId();
+
+    List<Queue> findAllByStatusIsAndActivatedAtBefore(String status, LocalDateTime validationTime);
+
+    long countAllByStatusIs(String name);
+
+    List<Queue> findAllByStatusIsAndIdGreaterThanOrderByIdAsc(String name, long lastActiveUserTokenId, PageRequest of);
 }

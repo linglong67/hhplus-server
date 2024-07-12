@@ -1,14 +1,20 @@
 package io.hhplus.server.domain.queue;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class QueueService {
     private final QueueRepository queueRepository;
+
+    private static final int MAX_QUEUE_SIZE = 50;
+    private static final int MAX_ACTIVE_MINUTES = 30;
 
     public Queue generateToken(long userId) {
         Queue queue = new Queue();
@@ -50,5 +56,33 @@ public class QueueService {
         }
 
         return queue.get();
+    }
+
+    public List<Queue> findUsersToActivate() {
+        int currentEntries = (int) queueRepository.countAllByStatusIs(Queue.Status.ACTIVE.name());
+        int entryLimit = MAX_QUEUE_SIZE - currentEntries;
+
+        long lastActiveUserTokenId = queueRepository.getLastActiveUserTokenId();
+
+        return queueRepository.findAllByStatusIsAndIdGreaterThanOrderByIdAsc(
+                Queue.Status.WAITING.name(), lastActiveUserTokenId, PageRequest.of(0, entryLimit));
+    }
+
+    public void activateTokens(List<Queue> queueList) {
+        for(Queue queue : queueList) {
+            queue.activate();
+            queueRepository.save(queue);
+        }
+    }
+
+    public List<Queue> findActiveUsersForMoreThan30Minutes() {
+        return queueRepository.findAllByStatusIsAndActivatedAtBefore(Queue.Status.ACTIVE.name(), LocalDateTime.now().minusMinutes(MAX_ACTIVE_MINUTES));
+    }
+
+    public void expireTokens(List<Queue> queueList) {
+        for(Queue queue : queueList) {
+            queue.expire();
+            queueRepository.save(queue);
+        }
     }
 }
