@@ -1,4 +1,6 @@
 package io.hhplus.server.infrastructure.payment;
 
-public interface PaymentJpaRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface PaymentJpaRepository extends JpaRepository<PaymentEntity, Long> {
 }

@@ -1,4 +1,17 @@
 package io.hhplus.server.infrastructure.payment;
 
-public class PaymentRepositoryImpl {
+import io.hhplus.server.domain.payment.Payment;
+import io.hhplus.server.domain.payment.PaymentRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Repository;
+
+@Repository
+@RequiredArgsConstructor
+public class PaymentRepositoryImpl implements PaymentRepository {
+    private final PaymentJpaRepository paymentRepository;
+
+    @Override
+    public Payment save(Payment payment) {
+        return null;
+    }
 }
