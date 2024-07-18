@@ -3,6 +3,7 @@ package io.hhplus.server.service;
 import io.hhplus.server.domain.queue.Queue;
 import io.hhplus.server.domain.queue.QueueRepository;
 import io.hhplus.server.domain.queue.QueueService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -28,6 +29,7 @@ class QueueServiceTest {
     private QueueRepository queueRepository;
 
     @Test
+    @DisplayName("토큰 생성")
     void generateToken_success() {
         //given
         long userId = 1L;
@@ -42,13 +44,14 @@ class QueueServiceTest {
     }
 
     @Test
+    @DisplayName("대기열 순서 조회")
     void getQueueOrder_success() {
         //given
         long userId = 1L;
         String token = "token";
         Queue queue = Queue.builder().id(10L).build();
         when(queueRepository.getQueue(userId, token)).thenReturn(Optional.of(queue));
-        when(queueRepository.getLastActiveUserTokenId()).thenReturn(5L);
+        when(queueRepository.getLastActiveUserQueueId()).thenReturn(5L);
 
         //when
         long order = queueService.getQueueOrder(userId, token);
@@ -58,6 +61,7 @@ class QueueServiceTest {
     }
 
     @Test
+    @DisplayName("대기열 순서 조회 - 유효하지 않은 토큰")
     void getQueueOrder_failure_invalidToken() {
         //given
         long userId = 1L;
@@ -71,6 +75,7 @@ class QueueServiceTest {
     }
 
     @Test
+    @DisplayName("토큰 정보 조회")
     void getQueueInfo_success() {
         //given
         long userId = 1L;
@@ -86,6 +91,7 @@ class QueueServiceTest {
     }
 
     @Test
+    @DisplayName("토큰 검증")
     void verifyQueue_success() {
         //given
         long userId = 1L;
@@ -99,6 +105,7 @@ class QueueServiceTest {
     }
 
     @Test
+    @DisplayName("활성 토큰 검증")
     void verifyQueue_failure_inactiveToken() {
         //given
         long userId = 1L;
@@ -113,6 +120,7 @@ class QueueServiceTest {
     }
 
     @Test
+    @DisplayName("토큰 만료 (단건)")
     void expireToken_success() {
         //given
         long userId = 1L;
@@ -129,16 +137,17 @@ class QueueServiceTest {
     }
 
     @Test
+    @DisplayName("활성시킬 사용자 목록 조회")
     void findUsersToActivate_success() {
         //given
         int currentEntries = 10;
-        long lastActiveUserTokenId = 5L;
+        long lastActiveUserQueueId = 5L;
         List<Queue> expectedQueues = List.of(Queue.builder().build(), Queue.builder().build());
 
         when(queueRepository.countAllByStatusIs(Queue.Status.ACTIVE)).thenReturn((long) currentEntries);
-        when(queueRepository.getLastActiveUserTokenId()).thenReturn(lastActiveUserTokenId);
+        when(queueRepository.getLastActiveUserQueueId()).thenReturn(lastActiveUserQueueId);
         when(queueRepository.findAllByStatusIsAndIdGreaterThanOrderByIdAsc(
-                eq(Queue.Status.WAITING), eq(lastActiveUserTokenId), any(PageRequest.class)
+                eq(Queue.Status.WAITING), eq(lastActiveUserQueueId), any(PageRequest.class)
         )).thenReturn(expectedQueues);
 
         //when
@@ -149,6 +158,7 @@ class QueueServiceTest {
     }
 
     @Test
+    @DisplayName("토큰 활성 (다건)")
     void activateTokens_success() {
         //given
         List<Queue> queueList = List.of(mock(Queue.class), mock(Queue.class));
@@ -164,6 +174,7 @@ class QueueServiceTest {
     }
 
     @Test
+    @DisplayName("30분 이상 활성 상태인 사용자 조회")
     void findActiveUsersForMoreThan30Minutes_success() {
         //given
         List<Queue> expectedQueues = List.of(Queue.builder().build(), Queue.builder().build());
@@ -179,6 +190,7 @@ class QueueServiceTest {
     }
 
     @Test
+    @DisplayName("토큰 만료 (다건)")
     void expireTokens_success() {
         //given
         List<Queue> queueList = List.of(mock(Queue.class), mock(Queue.class));

@@ -23,7 +23,7 @@ public class ReservationService {
         Optional<Reservation> reservation = reservationRepository.findById(reservationId);
 
         if (reservation.isEmpty()) {
-            throw new IllegalStateException("예약 정보를 찾을 수 없음");
+            throw new IllegalArgumentException("예약 정보를 찾을 수 없음");
         }
 
         Reservation reservationInfo = reservation.get();

@@ -1,7 +1,7 @@
-package io.hhplus.server.presentation.user;
+package io.hhplus.server.interfaces.presentation.user;
 
 import io.hhplus.server.application.user.UserFacade;
-import io.hhplus.server.presentation.user.dto.PointResponse;
+import io.hhplus.server.interfaces.presentation.user.dto.PointResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +29,6 @@ public class UserController {
     @PatchMapping("{userId}/points/use")
     @Operation(summary = "포인트 사용", description = "사용자의 포인트를 사용하는 API")
     public PointResponse usePoint(@PathVariable("userId") long userId, @RequestBody int amount) {
-        return PointResponse.toResponse(userFacade.chargePoint(userId, amount));
+        return PointResponse.toResponse(userFacade.usePoint(userId, amount));
     }
 }

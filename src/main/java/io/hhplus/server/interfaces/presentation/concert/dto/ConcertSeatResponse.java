@@ -1,4 +1,4 @@
-package io.hhplus.server.presentation.concert.dto;
+package io.hhplus.server.interfaces.presentation.concert.dto;
 
 import io.hhplus.server.application.concert.ConcertSeatDto;
 import lombok.Builder;
@@ -11,14 +11,14 @@ public class ConcertSeatResponse {
     private long placeId;
     private long seatId;
     private long seatNo;
-    private long price;
+    private int price;
 
     public static ConcertSeatResponse toResponse(ConcertSeatDto dto) {
         return ConcertSeatResponse.builder()
                                   .concertSeatId(dto.getConcertSeatId())
                                   .placeId(dto.getPlaceId())
                                   .seatId(dto.getSeatId())
-                                  .seatNo(dto.getSeatNo())
+//                                  .seatNo(dto.getSeatNo())
                                   .price(dto.getPrice())
                                   .build();
     }

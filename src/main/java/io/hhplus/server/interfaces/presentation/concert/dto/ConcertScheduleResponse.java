@@ -1,4 +1,4 @@
-package io.hhplus.server.presentation.concert.dto;
+package io.hhplus.server.interfaces.presentation.concert.dto;
 
 import io.hhplus.server.application.concert.ConcertScheduleDto;
 import lombok.Builder;
@@ -11,13 +11,13 @@ import java.time.LocalDateTime;
 public class ConcertScheduleResponse {
     private long concertScheduleId;
     private long placeId;
-    private LocalDateTime concertDateTime;
+    private LocalDateTime concertDatetime;
 
     public static ConcertScheduleResponse toResponse(ConcertScheduleDto dto) {
         return ConcertScheduleResponse.builder()
                                       .concertScheduleId(dto.getConcertScheduleId())
                                       .placeId(dto.getPlaceId())
-                                      .concertDateTime(dto.getConcertDateTime())
+                                      .concertDatetime(dto.getConcertDatetime())
                                       .build();
     }
 }

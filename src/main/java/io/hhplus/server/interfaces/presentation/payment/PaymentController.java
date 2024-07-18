@@ -1,8 +1,8 @@
-package io.hhplus.server.presentation.payment;
+package io.hhplus.server.interfaces.presentation.payment;
 
 import io.hhplus.server.application.payment.PaymentFacade;
-import io.hhplus.server.presentation.payment.dto.PaymentRequest;
-import io.hhplus.server.presentation.payment.dto.PaymentResponse;
+import io.hhplus.server.interfaces.presentation.payment.dto.PaymentRequest;
+import io.hhplus.server.interfaces.presentation.payment.dto.PaymentResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

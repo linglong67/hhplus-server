@@ -1,4 +1,4 @@
-package io.hhplus.server.presentation.queue;
+package io.hhplus.server.interfaces.scheduler;
 
 import io.hhplus.server.application.queue.QueueFacade;
 import lombok.RequiredArgsConstructor;

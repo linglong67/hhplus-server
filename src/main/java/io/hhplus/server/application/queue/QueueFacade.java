@@ -31,14 +31,14 @@ public class QueueFacade {
         return QueueDto.toDto(queue, queueOrder);
     }
 
-    // 토큰 활성화 (스케줄러)
+    // 토큰 활성화
     @Transactional
     public void activateTokens() {
         List<Queue> activateTargets = queueService.findUsersToActivate();
         queueService.activateTokens(activateTargets);
     }
 
-    // 토큰 만료 (스케줄러)
+    // 토큰 만료
     @Transactional
     public void expireTokens() {
         List<Queue> expireTargets = queueService.findActiveUsersForMoreThan30Minutes();

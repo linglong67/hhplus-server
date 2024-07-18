@@ -11,13 +11,13 @@ import java.time.LocalDateTime;
 public class ConcertScheduleDto {
     private long concertScheduleId;
     private long placeId;
-    private LocalDateTime concertDateTime;
+    private LocalDateTime concertDatetime;
 
     public static ConcertScheduleDto toDto(ConcertSchedule concertSchedule) {
         return ConcertScheduleDto.builder()
                                  .concertScheduleId(concertSchedule.getId())
                                  .placeId(concertSchedule.getPlaceId())
-                                 .concertDateTime(concertSchedule.getConcertDateTime())
+                                 .concertDatetime(concertSchedule.getConcertDatetime())
                                  .build();
     }
 }

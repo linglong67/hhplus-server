@@ -28,7 +28,7 @@ class UserServiceTest {
     private UserRepository userRepository;
 
     @Test
-    @DisplayName("포인트 조회 - 정상")
+    @DisplayName("포인트 조회")
     void getPoint_success() {
         //given
         Long userId = 1L;
@@ -49,6 +49,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("포인트 충전")
     void chargePoint_success() {
         //given
         long userId = 1L;
@@ -66,6 +67,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("포인트 충전 실패")
     void chargePoint_failure_invalidAmount() {
         //given
         long userId = 1L;
@@ -79,6 +81,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("포인트 사용")
     void usePoint_success() {
         //given
         long userId = 1L;
@@ -97,6 +100,7 @@ class UserServiceTest {
     }
 
     @Test
+    @DisplayName("포인트 사용 실패")
     void usePoint_failure_insufficientBalance() {
         //given
         long userId = 1L;
@@ -108,11 +112,12 @@ class UserServiceTest {
 
         //when & then
         assertThatThrownBy(() -> userService.usePoint(userId, amount))
-                .isInstanceOf(IllegalArgumentException.class)
+                .isInstanceOf(IllegalStateException.class)
                 .hasMessage("잔액 초과하여 사용 불가");
     }
 
     @Test
+    @DisplayName("존재하지 않는 사용자 예외 처리")
     void getUser_failure_nonexistentUser() {
         //given
         long userId = 1L;

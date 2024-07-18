@@ -1,4 +1,4 @@
-package io.hhplus.server.presentation.reservation.dto;
+package io.hhplus.server.interfaces.presentation.reservation.dto;
 
 import io.hhplus.server.application.reservation.ReservationDto;
 import lombok.Builder;

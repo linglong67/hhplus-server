@@ -5,6 +5,7 @@ import io.hhplus.server.application.queue.QueueFacade;
 import io.hhplus.server.domain.queue.Queue;
 import io.hhplus.server.domain.queue.QueueRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -40,6 +41,7 @@ public class QueueIntegrationTest {
     }
 
     @Test
+    @DisplayName("토큰 발급 (생성)")
     void generateToken() {
         //given
         long userId = 1L;
@@ -55,6 +57,7 @@ public class QueueIntegrationTest {
     }
 
     @Test
+    @DisplayName("토큰 정보 조회")
     void getQueueInfo() {
         //given
         String token = testQueue.getToken();
@@ -71,6 +74,7 @@ public class QueueIntegrationTest {
     }
 
     @Test
+    @DisplayName("토큰 활성화")
     void activateTokens() {
         //given
         Queue waitingQueue = Queue.builder()
@@ -90,6 +94,7 @@ public class QueueIntegrationTest {
     }
 
     @Test
+    @DisplayName("토큰 만료")
     void expireTokens() {
         //given
         Queue activeQueue = Queue.builder()

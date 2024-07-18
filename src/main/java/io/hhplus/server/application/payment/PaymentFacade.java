@@ -17,6 +17,7 @@ public class PaymentFacade {
     private final UserService userService;
     private final ReservationService reservationService;
 
+    // 결제
     @Transactional
     public PaymentDto payment(String token, PaymentDto dto) {
         queueService.verifyQueue(dto.getUserId(), token);
