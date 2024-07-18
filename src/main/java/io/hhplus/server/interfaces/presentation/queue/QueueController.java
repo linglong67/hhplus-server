@@ -1,7 +1,7 @@
-package io.hhplus.server.presentation.queue;
+package io.hhplus.server.interfaces.presentation.queue;
 
 import io.hhplus.server.application.queue.QueueFacade;
-import io.hhplus.server.presentation.queue.dto.QueueResponse;
+import io.hhplus.server.interfaces.presentation.queue.dto.QueueResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package io.hhplus.server.presentation.concert.dto;
+package io.hhplus.server.interfaces.presentation.concert.dto;
 
 import io.hhplus.server.application.concert.ConcertDto;
 import lombok.Builder;

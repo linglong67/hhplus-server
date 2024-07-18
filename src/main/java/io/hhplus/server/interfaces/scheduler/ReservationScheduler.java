@@ -1,4 +1,4 @@
-package io.hhplus.server.presentation.reservation;
+package io.hhplus.server.interfaces.scheduler;
 
 import io.hhplus.server.application.reservation.ReservationFacade;
 import lombok.RequiredArgsConstructor;

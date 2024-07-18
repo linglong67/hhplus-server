@@ -1,4 +1,4 @@
-package io.hhplus.server.presentation.payment.dto;
+package io.hhplus.server.interfaces.presentation.payment.dto;
 
 import io.hhplus.server.application.payment.PaymentDto;
 import lombok.Builder;

@@ -1,8 +1,8 @@
-package io.hhplus.server.presentation.reservation;
+package io.hhplus.server.interfaces.presentation.reservation;
 
 import io.hhplus.server.application.reservation.ReservationFacade;
-import io.hhplus.server.presentation.reservation.dto.ReservationRequest;
-import io.hhplus.server.presentation.reservation.dto.ReservationResponse;
+import io.hhplus.server.interfaces.presentation.reservation.dto.ReservationRequest;
+import io.hhplus.server.interfaces.presentation.reservation.dto.ReservationResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;

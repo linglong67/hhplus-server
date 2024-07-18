@@ -1,4 +1,4 @@
-package io.hhplus.server.presentation.user.dto;
+package io.hhplus.server.interfaces.presentation.user.dto;
 
 import io.hhplus.server.application.user.PointDto;
 import lombok.Builder;

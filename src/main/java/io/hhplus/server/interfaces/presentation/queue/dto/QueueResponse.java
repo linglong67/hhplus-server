@@ -1,4 +1,4 @@
-package io.hhplus.server.presentation.queue.dto;
+package io.hhplus.server.interfaces.presentation.queue.dto;
 
 import io.hhplus.server.application.queue.QueueDto;
 import lombok.Builder;
