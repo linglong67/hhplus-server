@@ -66,4 +66,22 @@ public class ConcertService {
     public Optional<ConcertSeat> findConcertSeatById(Long concertSeatId) {
         return concertRepository.findConcertSeat(concertSeatId);
     }
+
+    public void getConcertInfo(long concertScheduleId) {
+        Optional<ConcertSchedule> concertSchedule = concertRepository.findConcertSchedule(concertScheduleId);
+
+        if(concertSchedule.isEmpty()) {
+            throw new BusinessException(ErrorCode.CONCERT_SCHEDULE_NOT_FOUND);
+        }
+
+        Optional<Concert> concert = concertRepository.findConcert(concertSchedule.get().getConcertId());
+        Optional<Place> place = concertRepository.findPlace(concertSchedule.get().getPlaceId());
+    }
+
+    public void getConcertSeatInfo(List<Long> concertSeatIds) {
+        for(Long concertSeatId : concertSeatIds) {
+            Optional<ConcertSeat> concertSeat = concertRepository.findConcertSeat(concertSeatId);
+            concertRepository.findSeat(concertSeat.get().getSeatId());
+        }
+    }
 }

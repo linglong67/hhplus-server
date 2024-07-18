@@ -3,6 +3,7 @@ package io.hhplus.server.infrastructure.reservation;
 import io.hhplus.server.domain.reservation.Reservation;
 import io.hhplus.server.domain.reservation.ReservationRepository;
 import io.hhplus.server.infrastructure.reservation.entity.ReservationEntity;
+import io.hhplus.server.infrastructure.reservation.entity.ReservationTicketEntity;
 import io.hhplus.server.infrastructure.reservation.repository.ReservationJpaRepository;
 import io.hhplus.server.infrastructure.reservation.repository.ReservationTicketJpaRepository;
 import lombok.RequiredArgsConstructor;
@@ -41,5 +42,11 @@ public class ReservationRepositoryImpl implements ReservationRepository {
                                     .stream()
                                     .map(ReservationEntity::toDomain)
                                     .toList();
+    }
+
+    @Override
+    public List<Reservation.Ticket> issueTickets(List<Reservation.Ticket> tickets) {
+        return reservationTicketRepository.saveAll(tickets.stream().map(ReservationTicketEntity::from).toList())
+                                          .stream().map(ReservationTicketEntity::toDomain).toList();
     }
 }

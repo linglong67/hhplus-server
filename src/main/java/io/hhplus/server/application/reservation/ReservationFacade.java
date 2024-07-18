@@ -1,7 +1,6 @@
 package io.hhplus.server.application.reservation;
 
 import io.hhplus.server.domain.concert.ConcertService;
-import io.hhplus.server.domain.queue.QueueService;
 import io.hhplus.server.domain.reservation.Reservation;
 import io.hhplus.server.domain.reservation.ReservationService;
 import lombok.RequiredArgsConstructor;
@@ -14,13 +13,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReservationFacade {
     private final ReservationService reservationService;
-    private final QueueService queueService;
     private final ConcertService concertService;
 
     // 좌석 예약
     @Transactional
     public ReservationDto reserveSeat(ReservationDto dto) {
         concertService.assignSeats(dto.getConcertSeatIds());
+
+        concertService.getConcertInfo(dto.getConcertScheduleId());
+        concertService.getConcertSeatInfo(dto.getConcertSeatIds());
+
         return ReservationDto.toDto(reservationService.reserve(dto.toDomain()));
     }
 

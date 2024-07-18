@@ -1,15 +1,8 @@
 package io.hhplus.server.infrastructure.concert;
 
-import io.hhplus.server.domain.concert.Concert;
-import io.hhplus.server.domain.concert.ConcertRepository;
-import io.hhplus.server.domain.concert.ConcertSchedule;
-import io.hhplus.server.domain.concert.ConcertSeat;
-import io.hhplus.server.infrastructure.concert.entity.ConcertEntity;
-import io.hhplus.server.infrastructure.concert.entity.ConcertScheduleEntity;
-import io.hhplus.server.infrastructure.concert.entity.ConcertSeatEntity;
-import io.hhplus.server.infrastructure.concert.repository.ConcertJpaRepository;
-import io.hhplus.server.infrastructure.concert.repository.ConcertScheduleJpaRepository;
-import io.hhplus.server.infrastructure.concert.repository.ConcertSeatJpaRepository;
+import io.hhplus.server.domain.concert.*;
+import io.hhplus.server.infrastructure.concert.entity.*;
+import io.hhplus.server.infrastructure.concert.repository.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
@@ -23,6 +16,8 @@ public class ConcertRepositoryImpl implements ConcertRepository {
     private final ConcertJpaRepository concertRepository;
     private final ConcertScheduleJpaRepository concertScheduleRepository;
     private final ConcertSeatJpaRepository concertSeatRepository;
+    private final PlaceJpaRepository placeRepository;
+    private final SeatJpaRepository seatRepository;
 
     @Override
     public List<Concert> findAll() {
@@ -57,5 +52,25 @@ public class ConcertRepositoryImpl implements ConcertRepository {
     @Override
     public Optional<ConcertSeat> findConcertSeat(Long concertSeatId) {
         return concertSeatRepository.findById(concertSeatId).map(ConcertSeatEntity::toDomain);
+    }
+
+    @Override
+    public Optional<Concert> findConcert(Long concertId) {
+        return concertRepository.findById(concertId).map(ConcertEntity::toDomain);
+    }
+
+    @Override
+    public Optional<ConcertSchedule> findConcertSchedule(Long concertScheduleId) {
+        return concertScheduleRepository.findById(concertScheduleId).map(ConcertScheduleEntity::toDomain);
+    }
+
+    @Override
+    public Optional<Place> findPlace(Long placeId) {
+        return placeRepository.findById(placeId).map(PlaceEntity::toDomain);
+    }
+
+    @Override
+    public Optional<Place.Seat> findSeat(Long seatId) {
+        return seatRepository.findById(seatId).map(SeatEntity::toDomain);
     }
 }

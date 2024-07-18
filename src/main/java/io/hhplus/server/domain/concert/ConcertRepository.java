@@ -13,4 +13,12 @@ public interface ConcertRepository {
     ConcertSeat update(ConcertSeat concertSeat);
 
     Optional<ConcertSeat> findConcertSeat(Long concertSeatId);
+
+    Optional<Concert> findConcert(Long concertId);
+
+    Optional<ConcertSchedule> findConcertSchedule(Long concertScheduleId);
+
+    Optional<Place> findPlace(Long placeId);
+
+    Optional<Place.Seat> findSeat(Long seatId);
 }

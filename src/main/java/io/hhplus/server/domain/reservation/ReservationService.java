@@ -18,7 +18,11 @@ public class ReservationService {
 
     public Reservation reserve(Reservation reservation) {
         reservation.updateStatus(Reservation.Status.RESERVED);
-        return reservationRepository.reserve(reservation);
+        Reservation reservationInfo = reservationRepository.reserve(reservation);
+
+        reservationRepository.issueTickets(reservation.getTickets());
+
+        return reservationInfo;
     }
 
     public Reservation updateReservationStatus(long reservationId) {
@@ -29,6 +33,7 @@ public class ReservationService {
         }
 
         Reservation reservationInfo = reservation.get();
+        reservationInfo.isPaymentProcessable();
         reservationInfo.updateStatus(Reservation.Status.PAID);
 
         return reservationRepository.update(reservationInfo);
