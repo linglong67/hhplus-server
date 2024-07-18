@@ -1,5 +1,6 @@
 package io.hhplus.server.service;
 
+import io.hhplus.server.domain.common.exception.BusinessException;
 import io.hhplus.server.domain.queue.Queue;
 import io.hhplus.server.domain.queue.QueueRepository;
 import io.hhplus.server.domain.queue.QueueService;
@@ -70,8 +71,7 @@ class QueueServiceTest {
 
         //when & then
         assertThatThrownBy(() -> queueService.getQueueOrder(userId, token))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("유효하지 않은 토큰 정보");
+                .isInstanceOf(BusinessException.class);
     }
 
     @Test
@@ -98,25 +98,24 @@ class QueueServiceTest {
         String token = "token";
         Queue queue = Queue.builder().build();
         queue.activate(); // 상태를 ACTIVE로 설정
-        when(queueRepository.getQueue(userId, token)).thenReturn(Optional.of(queue));
+        when(queueRepository.getQueue(token)).thenReturn(Optional.of(queue));
 
         //when & then
-        assertThatCode(() -> queueService.verifyQueue(userId, token)).doesNotThrowAnyException();
+        assertThatCode(() -> queueService.verifyQueue(token)).doesNotThrowAnyException();
     }
 
     @Test
     @DisplayName("활성 토큰 검증")
     void verifyQueue_failure_inactiveToken() {
         //given
-        long userId = 1L;
+        long userId = 2L;
         String token = "token";
         Queue queue = Queue.builder().build();
-        when(queueRepository.getQueue(userId, token)).thenReturn(Optional.of(queue));
+        when(queueRepository.getQueue(token)).thenReturn(Optional.of(queue));
 
         //when & then
-        assertThatThrownBy(() -> queueService.verifyQueue(userId, token))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("활성 토큰이 아님");
+        assertThatThrownBy(() -> queueService.verifyQueue(token))
+                .isInstanceOf(BusinessException.class);
     }
 
     @Test

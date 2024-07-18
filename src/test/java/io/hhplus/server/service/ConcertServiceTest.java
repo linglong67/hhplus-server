@@ -1,5 +1,6 @@
 package io.hhplus.server.service;
 
+import io.hhplus.server.domain.common.exception.BusinessException;
 import io.hhplus.server.domain.concert.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -52,9 +53,9 @@ class ConcertServiceTest {
         Long concertId = 1L;
         List<ConcertSchedule> expected = List.of(
                 ConcertSchedule.builder().id(1L).concertId(concertId).placeId(1L)
-                               .concertDateTime(LocalDateTime.of(2025, 1, 13, 18, 0)).build(),
+                               .concertDatetime(LocalDateTime.of(2025, 1, 13, 18, 0)).build(),
                 ConcertSchedule.builder().id(2L).concertId(concertId).placeId(1L)
-                               .concertDateTime(LocalDateTime.of(2025, 1, 14, 18, 0)).build()
+                               .concertDatetime(LocalDateTime.of(2025, 1, 14, 18, 0)).build()
         );
 
         //when
@@ -87,16 +88,22 @@ class ConcertServiceTest {
         List<Long> concertSeatIds = List.of(1L, 2L);
 
         for (Long concertSeatId : concertSeatIds) {
-            concertRepository.assignSeat(concertSeatId);
+            Optional<ConcertSeat> concertSeat = concertRepository.findConcertSeat(concertSeatId);
+
+            if (concertSeat.isPresent()) {
+                ConcertSeat seat = concertSeat.get();
+                seat.assign();
+                concertRepository.update(seat);
+            }
         }
 
         //when
-        ArgumentCaptor<Long> concertSeatIdCaptor = ArgumentCaptor.forClass(Long.class);
-        verify(concertRepository, times(concertSeatIds.size())).assignSeat(concertSeatIdCaptor.capture());
+        ArgumentCaptor<Long> concertSeatIdsCaptor = ArgumentCaptor.forClass(Long.class);
+        verify(concertRepository, times(concertSeatIds.size())).findConcertSeat(concertSeatIdsCaptor.capture());
 
         //then
-        List<Long> capturedSeatIds = concertSeatIdCaptor.getAllValues();
-        assertThat(capturedSeatIds).isEqualTo(concertSeatIds);
+        List<Long> concertSeats = concertSeatIdsCaptor.getAllValues();
+        assertThat(concertSeats).isEqualTo(concertSeatIds);
     }
 
     @Test
@@ -104,13 +111,24 @@ class ConcertServiceTest {
     void assignSeats_failure() {
         //given
         List<Long> concertSeatIds = Arrays.asList(1L, 2L);
-        when(concertRepository.assignSeat(1L)).thenThrow(ObjectOptimisticLockingFailureException.class);
+        Optional<ConcertSeat> seat = Optional.of(
+                ConcertSeat.builder()
+                           .id(1L)
+                           .concertScheduleId(1L)
+                           .seatId(1L)
+                           .status(ConcertSeat.Status.OCCUPIED)
+                           .price(10000)
+                           .build()
+        );
+
+        when(concertRepository.findConcertSeat(1L)).thenReturn(seat);
+        when(concertRepository.update(seat.get())).thenThrow(ObjectOptimisticLockingFailureException.class);
 
         //when & then
-        IllegalStateException exception =
-                assertThrows(IllegalStateException.class, () -> concertService.assignSeats(concertSeatIds));
+        BusinessException exception =
+                assertThrows(BusinessException.class, () -> concertService.assignSeats(concertSeatIds));
 
-        assertThat(exception.getMessage()).isEqualTo("이미 선택된 좌석");
+        assertThat(exception.getErrorCode().getMessage()).isEqualTo("이미 선택된 좌석");
     }
 
     @Test
