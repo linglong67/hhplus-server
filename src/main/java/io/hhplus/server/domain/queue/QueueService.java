@@ -34,8 +34,8 @@ public class QueueService {
         return getQueue(userId, token);
     }
 
-    public void verifyQueue(long userId, String token) {
-        Queue queue = getQueue(userId, token);
+    public void verifyQueue(String token) {
+        Queue queue = getQueue(token);
 
         if (queue.getStatus() != Queue.Status.ACTIVE) {
             throw new IllegalStateException("활성 토큰이 아님");
@@ -46,6 +46,16 @@ public class QueueService {
         Queue queue = getQueue(userId, token);
         queue.expire();
         queueRepository.save(queue);
+    }
+
+    private Queue getQueue(String token) {
+        Optional<Queue> queue = queueRepository.getQueue(token);
+
+        if (queue.isEmpty()) {
+            throw new IllegalArgumentException("유효하지 않은 토큰 정보");
+        }
+
+        return queue.get();
     }
 
     private Queue getQueue(long userId, String token) {

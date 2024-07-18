@@ -19,8 +19,7 @@ public class ReservationFacade {
 
     // 좌석 예약
     @Transactional
-    public ReservationDto reserveSeat(String token, ReservationDto dto) {
-        queueService.verifyQueue(dto.getUserId(), token);
+    public ReservationDto reserveSeat(ReservationDto dto) {
         concertService.assignSeats(dto.getConcertSeatIds());
         return ReservationDto.toDto(reservationService.reserve(dto.toDomain()));
     }

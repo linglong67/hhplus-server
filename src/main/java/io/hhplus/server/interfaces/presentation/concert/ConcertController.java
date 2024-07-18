@@ -20,9 +20,8 @@ public class ConcertController {
 
     @GetMapping
     @Operation(summary = "콘서트 목록 조회", description = "콘서트 목록을 조회하는 API")
-    public List<ConcertResponse> getConcerts(
-            @RequestHeader("Queue-Token") String token, @RequestBody long userId) {
-        return concertFacade.getConcerts(userId, token)
+    public List<ConcertResponse> getConcerts() {
+        return concertFacade.getConcerts()
                             .stream()
                             .map(ConcertResponse::toResponse)
                             .toList();
@@ -30,10 +29,8 @@ public class ConcertController {
 
     @GetMapping("{concertId}/available-dates")
     @Operation(summary = "예약 가능 날짜 조회", description = "특정 콘서트의 예약 가능한 날짜 목록을 조회하는 API")
-    public List<ConcertScheduleResponse> getAvailableDates(
-            @RequestHeader("Queue-Token") String token, @RequestBody long userId,
-            @PathVariable("concertId") long concertId) {
-        return concertFacade.getAvailableDates(concertId, userId, token)
+    public List<ConcertScheduleResponse> getAvailableDates(@PathVariable("concertId") long concertId) {
+        return concertFacade.getAvailableDates(concertId)
                             .stream()
                             .map(ConcertScheduleResponse::toResponse)
                             .toList();
@@ -42,10 +39,9 @@ public class ConcertController {
     @GetMapping("{concertId}/schedules/{concertScheduleId}/available-seats")
     @Operation(summary = "예약 가능 좌석 조회", description = "특정 콘서트 일정의 예약 가능한 좌석 목록을 조회하는 API")
     public List<ConcertSeatResponse> getAvailableSeats(
-            @RequestHeader("Queue-Token") String token, @RequestBody long userId,
             @PathVariable("concertId") long concertId,
             @PathVariable("concertScheduleId") long concertScheduleId) {
-        return concertFacade.getAvailableSeats(concertId, concertScheduleId, userId, token)
+        return concertFacade.getAvailableSeats(concertId, concertScheduleId)
                             .stream()
                             .map(ConcertSeatResponse::toResponse)
                             .toList();
