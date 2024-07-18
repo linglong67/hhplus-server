@@ -1,5 +1,7 @@
 package io.hhplus.server.domain.reservation;
 
+import io.hhplus.server.domain.common.exception.BusinessException;
+import io.hhplus.server.domain.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -23,7 +25,7 @@ public class ReservationService {
         Optional<Reservation> reservation = reservationRepository.findById(reservationId);
 
         if (reservation.isEmpty()) {
-            throw new IllegalArgumentException("예약 정보를 찾을 수 없음");
+            throw new BusinessException(ErrorCode.RESERVATION_NOT_FOUND);
         }
 
         Reservation reservationInfo = reservation.get();

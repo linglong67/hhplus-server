@@ -1,5 +1,7 @@
 package io.hhplus.server.domain.concert;
 
+import io.hhplus.server.domain.common.exception.BusinessException;
+import io.hhplus.server.domain.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
@@ -31,20 +33,21 @@ public class ConcertService {
                                   try {
                                       Optional<ConcertSeat> concertSeat = concertRepository.findConcertSeat(concertSeatId);
                                       if(concertSeat.isEmpty()) {
-                                          throw new IllegalArgumentException("존재하지 않는 좌석");
+                                          throw new BusinessException(ErrorCode.CONCERT_SEAT_NOT_FOUND);
                                       }
 
                                       ConcertSeat seat = concertSeat.get();
                                       seat.assign();
                                       return concertRepository.update(seat);
+
                                   } catch (ObjectOptimisticLockingFailureException e) {
-                                      throw new IllegalStateException("이미 선택된 좌석");
+                                      throw new BusinessException(ErrorCode.CONCERT_SEAT_ALREADY_OCCUPIED);
                                   }
                               })
                               .toList();
 
         if (assignedSeats.size() != concertSeatIds.size()) {
-            throw new IllegalStateException("존재하지 않거나 이미 선택된 좌석이 포함되어 있음");
+            throw new BusinessException(ErrorCode.CONCERT_SEAT_NOT_AVAILABLE);
         }
     }
 

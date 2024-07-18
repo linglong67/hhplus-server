@@ -1,5 +1,7 @@
 package io.hhplus.server.domain.queue;
 
+import io.hhplus.server.domain.common.exception.BusinessException;
+import io.hhplus.server.domain.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -38,7 +40,7 @@ public class QueueService {
         Queue queue = getQueue(token);
 
         if (queue.getStatus() != Queue.Status.ACTIVE) {
-            throw new IllegalStateException("활성 토큰이 아님");
+            throw new BusinessException(ErrorCode.QUEUE_TOKEN_NOT_ACTIVE);
         }
     }
 
@@ -52,7 +54,7 @@ public class QueueService {
         Optional<Queue> queue = queueRepository.getQueue(token);
 
         if (queue.isEmpty()) {
-            throw new IllegalArgumentException("유효하지 않은 토큰 정보");
+            throw new BusinessException(ErrorCode.QUEUE_TOKEN_NOT_FOUND);
         }
 
         return queue.get();
@@ -62,7 +64,7 @@ public class QueueService {
         Optional<Queue> queue = queueRepository.getQueue(userId, token);
 
         if (queue.isEmpty()) {
-            throw new IllegalArgumentException("유효하지 않은 토큰 정보");
+            throw new BusinessException(ErrorCode.QUEUE_TOKEN_NOT_FOUND);
         }
 
         return queue.get();
