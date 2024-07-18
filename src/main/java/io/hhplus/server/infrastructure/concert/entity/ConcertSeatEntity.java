@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "concertSeat")
+@Table(name = "concert_seat")
 @NoArgsConstructor
 public class ConcertSeatEntity {
     @Id
@@ -13,20 +13,26 @@ public class ConcertSeatEntity {
     private Long id;
 
     private Long concertScheduleId;
+
     private Long seatId;
-    private Long seatNo;
+
+    //TODO: concert_seat, seat는 나눠야할 듯
+//    private Long seatNo;
+
+    @Enumerated(EnumType.STRING)
     private ConcertSeat.Status status;
-    private Long price;
+
+    private Integer price;
 
     @Version
-    private Integer version;    // 낙관적 락으로 동시성 제어
+    private Integer version;
 
     public static ConcertSeatEntity from(ConcertSeat seat) {
         ConcertSeatEntity entity = new ConcertSeatEntity();
         entity.id = seat.getId();
         entity.concertScheduleId = seat.getConcertScheduleId();
         entity.seatId = seat.getSeatId();
-        entity.seatNo = seat.getSeatNo();
+//        entity.seatNo = seat.getSeatNo();
         entity.status = seat.getStatus();
         entity.price = seat.getPrice();
 
@@ -38,7 +44,7 @@ public class ConcertSeatEntity {
                           .id(entity.id)
                           .concertScheduleId(entity.concertScheduleId)
                           .seatId(entity.seatId)
-                          .seatNo(entity.seatNo)
+//                          .seatNo(entity.seatNo)
                           .status(entity.status)
                           .price(entity.price)
                           .build();

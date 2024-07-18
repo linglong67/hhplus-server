@@ -13,17 +13,17 @@ public class ConcertSeatDto {
     private long concertScheduleId;
     private long placeId;
     private long seatId;
-    private long seatNo;
+//    private long seatNo;
     private ConcertSeat.Status status;
-    private long price;
-    private LocalDateTime concertDateTime;
+    private int price;
+    private LocalDateTime concertDatetime;
 
     public static ConcertSeatDto toDto(ConcertSeat concertSeat) {
         return ConcertSeatDto.builder()
                              .concertSeatId(concertSeat.getId())
                              .concertScheduleId(concertSeat.getConcertScheduleId())
                              .seatId(concertSeat.getSeatId())
-                             .seatNo(concertSeat.getSeatNo())
+//                             .seatNo(concertSeat.getSeatNo())
                              .status(concertSeat.getStatus())
                              .price(concertSeat.getPrice())
                              .build();

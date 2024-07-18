@@ -25,9 +25,9 @@ public class QueueService {
 
     public long getQueueOrder(long userId, String token) {
         Queue queue = getQueue(userId, token);
-        long lastActiveUserTokenId = queueRepository.getLastActiveUserTokenId();
+        long lastActiveUserQueueId = queueRepository.getLastActiveUserQueueId();
 
-        return queue.getId() - lastActiveUserTokenId;
+        return queue.getId() - lastActiveUserQueueId;
     }
 
     public Queue getQueueInfo(long userId, String token) {
@@ -62,10 +62,10 @@ public class QueueService {
         int currentEntries = (int) queueRepository.countAllByStatusIs(Queue.Status.ACTIVE);
         int entryLimit = MAX_QUEUE_SIZE - currentEntries;
 
-        long lastActiveUserTokenId = queueRepository.getLastActiveUserTokenId();
+        long lastActiveUserQueueId = queueRepository.getLastActiveUserQueueId();
 
         return queueRepository.findAllByStatusIsAndIdGreaterThanOrderByIdAsc(
-                Queue.Status.WAITING, lastActiveUserTokenId, PageRequest.of(0, entryLimit));
+                Queue.Status.WAITING, lastActiveUserQueueId, PageRequest.of(0, entryLimit));
     }
 
     public void activateTokens(List<Queue> queueList) {

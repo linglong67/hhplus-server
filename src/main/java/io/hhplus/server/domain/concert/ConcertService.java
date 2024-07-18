@@ -29,7 +29,14 @@ public class ConcertService {
                 concertSeatIds.stream()
                               .map(concertSeatId -> {
                                   try {
-                                      return concertRepository.assignSeat(concertSeatId);
+                                      Optional<ConcertSeat> concertSeat = concertRepository.findConcertSeat(concertSeatId);
+                                      if(concertSeat.isEmpty()) {
+                                          throw new IllegalArgumentException("존재하지 않는 좌석");
+                                      }
+
+                                      ConcertSeat seat = concertSeat.get();
+                                      seat.assign();
+                                      return concertRepository.update(seat);
                                   } catch (ObjectOptimisticLockingFailureException e) {
                                       throw new IllegalStateException("이미 선택된 좌석");
                                   }
@@ -37,7 +44,7 @@ public class ConcertService {
                               .toList();
 
         if (assignedSeats.size() != concertSeatIds.size()) {
-            throw new IllegalStateException("이미 선택된 좌석이 포함되어 있음");
+            throw new IllegalStateException("존재하지 않거나 이미 선택된 좌석이 포함되어 있음");
         }
     }
 

@@ -10,9 +10,7 @@ public interface ConcertRepository {
 
     List<ConcertSeat> getAvailableSeats(long concertId, long concertScheduleId);
 
-    ConcertSeat assignSeat(Long concertSeatId);
+    ConcertSeat update(ConcertSeat concertSeat);
 
-    void update(ConcertSeat concertSeat);
-
-    Optional<ConcertSeat> findConcertSeat(Long releaseTarget);
+    Optional<ConcertSeat> findConcertSeat(Long concertSeatId);
 }

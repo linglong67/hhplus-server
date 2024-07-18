@@ -21,6 +21,8 @@ public class QueueEntity {
     private Queue.Status status;
 
     private LocalDateTime activatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public static QueueEntity from(Queue queue) {
         QueueEntity entity = new QueueEntity();
