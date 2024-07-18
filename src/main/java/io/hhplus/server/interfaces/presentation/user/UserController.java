@@ -1,7 +1,7 @@
 package io.hhplus.server.interfaces.presentation.user;
 
 import io.hhplus.server.application.user.UserFacade;
-import io.hhplus.server.interfaces.presentation.user.dto.PointResponse;
+import io.hhplus.server.interfaces.presentation.user.dto.UserResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -16,19 +16,19 @@ public class UserController {
 
     @GetMapping("{userId}/points")
     @Operation(summary = "포인트 조회", description = "사용자의 현재 포인트를 조회하는 API")
-    public PointResponse getPoint(@PathVariable("userId") long userId) {
-        return PointResponse.toResponse(userFacade.getPoint(userId));
+    public UserResponse getPoint(@PathVariable("userId") long userId) {
+        return UserResponse.toResponse(userFacade.getPoint(userId));
     }
 
     @PatchMapping("{userId}/points/charge")
     @Operation(summary = "포인트 충전", description = "사용자의 포인트를 충전하는 API")
-    public PointResponse chargePoint(@PathVariable("userId") long userId, @RequestBody int amount) {
-        return PointResponse.toResponse(userFacade.chargePoint(userId, amount));
+    public UserResponse chargePoint(@PathVariable("userId") long userId, @RequestBody int amount) {
+        return UserResponse.toResponse(userFacade.chargePoint(userId, amount));
     }
 
     @PatchMapping("{userId}/points/use")
     @Operation(summary = "포인트 사용", description = "사용자의 포인트를 사용하는 API")
-    public PointResponse usePoint(@PathVariable("userId") long userId, @RequestBody int amount) {
-        return PointResponse.toResponse(userFacade.usePoint(userId, amount));
+    public UserResponse usePoint(@PathVariable("userId") long userId, @RequestBody int amount) {
+        return UserResponse.toResponse(userFacade.usePoint(userId, amount));
     }
 }

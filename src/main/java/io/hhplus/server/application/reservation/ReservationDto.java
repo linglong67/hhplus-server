@@ -16,7 +16,6 @@ public class ReservationDto {
 
     public Reservation toDomain() {
         return Reservation.builder()
-                          .id(reservationId)
                           .userId(userId)
                           .concertScheduleId(concertScheduleId)
                           .concertSeatIds(concertSeatIds)

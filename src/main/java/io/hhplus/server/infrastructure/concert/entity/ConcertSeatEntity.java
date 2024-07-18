@@ -16,9 +16,6 @@ public class ConcertSeatEntity {
 
     private Long seatId;
 
-    //TODO: concert_seat, seat는 나눠야할 듯
-//    private Long seatNo;
-
     @Enumerated(EnumType.STRING)
     private ConcertSeat.Status status;
 
@@ -32,7 +29,6 @@ public class ConcertSeatEntity {
         entity.id = seat.getId();
         entity.concertScheduleId = seat.getConcertScheduleId();
         entity.seatId = seat.getSeatId();
-//        entity.seatNo = seat.getSeatNo();
         entity.status = seat.getStatus();
         entity.price = seat.getPrice();
 
@@ -44,7 +40,6 @@ public class ConcertSeatEntity {
                           .id(entity.id)
                           .concertScheduleId(entity.concertScheduleId)
                           .seatId(entity.seatId)
-//                          .seatNo(entity.seatNo)
                           .status(entity.status)
                           .price(entity.price)
                           .build();

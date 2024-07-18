@@ -3,12 +3,16 @@ package io.hhplus.server.infrastructure.queue;
 import io.hhplus.server.domain.queue.Queue;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "queue")
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class QueueEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -21,7 +25,12 @@ public class QueueEntity {
     private Queue.Status status;
 
     private LocalDateTime activatedAt;
+
+    @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime createdAt;
+
+    @LastModifiedDate
     private LocalDateTime updatedAt;
 
     public static QueueEntity from(Queue queue) {
@@ -31,6 +40,8 @@ public class QueueEntity {
         entity.token = queue.getToken();
         entity.status = queue.getStatus();
         entity.activatedAt = queue.getActivatedAt();
+        entity.createdAt = queue.getCreatedAt();
+        entity.updatedAt = queue.getUpdatedAt();
 
         return entity;
     }
@@ -42,6 +53,8 @@ public class QueueEntity {
                     .token(entity.token)
                     .status(entity.status)
                     .activatedAt(entity.activatedAt)
+                    .createdAt(entity.createdAt)
+                    .updatedAt(entity.updatedAt)
                     .build();
     }
 }

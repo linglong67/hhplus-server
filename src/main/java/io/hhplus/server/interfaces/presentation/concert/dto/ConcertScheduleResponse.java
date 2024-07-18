@@ -10,12 +10,14 @@ import java.time.LocalDateTime;
 @Builder
 public class ConcertScheduleResponse {
     private long concertScheduleId;
+    private long concertId;
     private long placeId;
     private LocalDateTime concertDatetime;
 
     public static ConcertScheduleResponse toResponse(ConcertScheduleDto dto) {
         return ConcertScheduleResponse.builder()
                                       .concertScheduleId(dto.getConcertScheduleId())
+                                      .concertId(dto.getConcertId())
                                       .placeId(dto.getPlaceId())
                                       .concertDatetime(dto.getConcertDatetime())
                                       .build();

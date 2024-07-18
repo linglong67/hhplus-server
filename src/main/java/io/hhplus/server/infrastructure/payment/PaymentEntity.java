@@ -3,12 +3,16 @@ package io.hhplus.server.infrastructure.payment;
 import io.hhplus.server.domain.payment.Payment;
 import jakarta.persistence.*;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "payment")
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 public class PaymentEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,7 +27,11 @@ public class PaymentEntity {
 
     private Integer paidPrice;
 
+    @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime createdAt;
+
+    @LastModifiedDate
     private LocalDateTime updatedAt;
 
     public static PaymentEntity from(Payment payment) {

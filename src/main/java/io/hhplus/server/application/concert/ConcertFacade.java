@@ -1,7 +1,6 @@
 package io.hhplus.server.application.concert;
 
 import io.hhplus.server.domain.concert.ConcertService;
-import io.hhplus.server.domain.queue.QueueService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,7 +11,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ConcertFacade {
     private final ConcertService concertService;
-    private final QueueService queueService;
 
     // 콘서트 목록 조회
     @Transactional(readOnly = true)

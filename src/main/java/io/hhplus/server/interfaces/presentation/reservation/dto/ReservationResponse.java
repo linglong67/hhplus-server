@@ -7,7 +7,6 @@ import lombok.Getter;
 @Getter
 @Builder
 public class ReservationResponse {
-    //TODO: 응답값 더 많이 채워야함
     private long reservationId;
     private long userId;
     private long concertScheduleId;

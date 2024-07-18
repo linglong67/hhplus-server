@@ -9,14 +9,13 @@ import lombok.Getter;
 public class PaymentDto {
     private long reservationId;
     private long userId;
-    private Payment.Status status;
-    int paidPrice;
+    private String status;
+    private int paidPrice;
 
     public Payment toDomain() {
         return Payment.builder()
                       .reservationId(reservationId)
                       .userId(userId)
-                      .status(status)
                       .paidPrice(paidPrice)
                       .build();
     }
@@ -24,7 +23,8 @@ public class PaymentDto {
     public static PaymentDto toDto(Payment payment) {
         return PaymentDto.builder()
                          .reservationId(payment.getReservationId())
-                         .status(payment.getStatus())
+                         .userId(payment.getUserId())
+                         .status(payment.getStatus().name())
                          .paidPrice(payment.getPaidPrice())
                          .build();
     }

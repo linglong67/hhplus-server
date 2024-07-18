@@ -19,8 +19,6 @@ public class UserService {
     @Transactional
     public User chargePoint(long userId, int amount) {
         User user =  getUser(userId);
-
-        validateAmount(amount);
         user.chargePoint(amount);
 
         return userRepository.save(user);
@@ -29,11 +27,6 @@ public class UserService {
     @Transactional
     public User usePoint(long userId, int amount) {
         User user =  getUser(userId);
-
-        if (user.getPoint() < amount) {
-            throw new BusinessException(ErrorCode.USER_POINT_NOT_ENOUGH);
-        }
-        validateAmount(amount);
         user.usePoint(amount);
 
         return userRepository.save(user);
@@ -42,11 +35,5 @@ public class UserService {
     private User getUser(long userId) {
         return userRepository.findById(userId)
                              .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
-    }
-
-    private void validateAmount(int amount) {
-        if (amount <= 0) {
-            throw new BusinessException(ErrorCode.USER_POINT_INVALID_VALUE);
-        }
     }
 }
