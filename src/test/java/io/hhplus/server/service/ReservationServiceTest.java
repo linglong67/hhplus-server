@@ -3,6 +3,7 @@ package io.hhplus.server.service;
 import io.hhplus.server.domain.reservation.Reservation;
 import io.hhplus.server.domain.reservation.ReservationRepository;
 import io.hhplus.server.domain.reservation.ReservationService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -27,6 +28,7 @@ class ReservationServiceTest {
     private ReservationRepository reservationRepository;
 
     @Test
+    @DisplayName("예약")
     void reserve_success() {
         //given
         String token = "testToken";
@@ -42,6 +44,7 @@ class ReservationServiceTest {
     }
 
     @Test
+    @DisplayName("예약 상태 업데이트")
     void updateReservationStatus_success() {
         //given
         long reservationId = 1L;
@@ -60,6 +63,7 @@ class ReservationServiceTest {
     }
 
     @Test
+    @DisplayName("예약 후 10분간 미결제 사용자 조회")
     void findUnpaidUsersWithin10MinutesOfReservation_success() {
         //given
         Reservation reservation1 = Reservation.builder().build();
@@ -76,6 +80,7 @@ class ReservationServiceTest {
     }
 
     @Test
+    @DisplayName("예약 취소")
     void cancelReservation_success() {
         //given
         Reservation reservation1 = Reservation.builder().build();

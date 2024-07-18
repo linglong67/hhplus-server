@@ -17,6 +17,7 @@ public class ReservationFacade {
     private final QueueService queueService;
     private final ConcertService concertService;
 
+    // 좌석 예약
     @Transactional
     public ReservationDto reserveSeat(String token, ReservationDto dto) {
         queueService.verifyQueue(dto.getUserId(), token);
@@ -24,7 +25,7 @@ public class ReservationFacade {
         return ReservationDto.toDto(reservationService.reserve(dto.toDomain()));
     }
 
-    // 좌석 임시 배정 만료 (스케줄러)
+    // 좌석 임시 배정 만료
     @Transactional
     public void releaseSeatHolds() {
         List<Reservation> reservations = reservationService.findUnpaidUsersWithin10MinutesOfReservation();

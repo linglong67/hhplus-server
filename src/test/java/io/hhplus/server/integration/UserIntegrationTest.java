@@ -5,6 +5,7 @@ import io.hhplus.server.application.user.UserFacade;
 import io.hhplus.server.domain.user.User;
 import io.hhplus.server.domain.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,6 +31,7 @@ class UserIntegrationTest {
     }
 
     @Test
+    @DisplayName("포인트 조회")
     void getPoint() {
         PointDto pointDto = userFacade.getPoint(testUser.getId());
         assertThat(pointDto).isNotNull();
@@ -37,6 +39,7 @@ class UserIntegrationTest {
     }
 
     @Test
+    @DisplayName("포인트 충전")
     void chargePoint() {
         PointDto pointDto = userFacade.chargePoint(testUser.getId(), 500);
         assertThat(pointDto).isNotNull();
@@ -44,6 +47,7 @@ class UserIntegrationTest {
     }
 
     @Test
+    @DisplayName("포인트 사용")
     void usePoint() {
         PointDto pointDto = userFacade.usePoint(testUser.getId(), 200);
         assertThat(pointDto).isNotNull();

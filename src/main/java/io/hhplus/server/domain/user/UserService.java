@@ -29,7 +29,7 @@ public class UserService {
         User user =  getUser(userId);
 
         if (user.getPoint() < amount) {
-            throw new IllegalArgumentException("잔액 초과하여 사용 불가");
+            throw new IllegalStateException("잔액 초과하여 사용 불가");
         }
         validateAmount(amount);
         user.usePoint(amount);

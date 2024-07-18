@@ -11,5 +11,5 @@ public class ConcertSchedule {
     private Long id;
     private Long concertId;
     private Long placeId;
-    private LocalDateTime concertDateTime;
+    private LocalDateTime concertDatetime;
 }

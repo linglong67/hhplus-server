@@ -3,6 +3,7 @@ package io.hhplus.server.service;
 import io.hhplus.server.domain.payment.PaymentRepository;
 import io.hhplus.server.domain.payment.PaymentService;
 import io.hhplus.server.domain.payment.Payment;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,6 +24,7 @@ class PaymentServiceTest {
     private PaymentRepository paymentRepository;
 
     @Test
+    @DisplayName("결제 정보 저장")
     void savePayment_success() {
         //given
         Payment payment = Payment.builder().build();
