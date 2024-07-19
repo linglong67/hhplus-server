@@ -15,6 +15,7 @@ public class ReservationService {
     private final ReservationRepository reservationRepository;
 
     private static final int MAX_UNPAID_MINUTES = 10;
+    private static final String UPDATED_BY_SYSTEM = "system";
 
     public Reservation reserve(Reservation reservation) {
         reservation.updateStatus(Reservation.Status.RESERVED);
@@ -48,6 +49,7 @@ public class ReservationService {
     public void cancelReservation(List<Reservation> reservations) {
         for (Reservation reservation : reservations) {
             reservation.updateStatus(Reservation.Status.CANCELED);
+            reservation.markUpdater(UPDATED_BY_SYSTEM);
             reservationRepository.update(reservation);
         }
     }

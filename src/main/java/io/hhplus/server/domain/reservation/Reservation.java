@@ -62,4 +62,8 @@ public class Reservation {
     public void calculateTotalPrice() {
         this.totalPrice = this.tickets.stream().map(Ticket::getPrice).reduce(0, Integer::sum);
     }
+
+    public void markUpdater(String updatedBy) {
+        this.updatedBy = updatedBy;
+    }
 }

@@ -35,7 +35,8 @@ public class QueueRepositoryImpl implements QueueRepository {
 
     @Override
     public long getLastActiveUserQueueId() {
-        return queueRepository.findFirstByStatusIsOrderByIdDesc(Queue.Status.ACTIVE);
+        Optional<QueueEntity> entity = queueRepository.findFirstByStatusIsOrderByIdDesc(Queue.Status.ACTIVE);
+        return entity.map(QueueEntity::getId).orElse(0L);
     }
 
     @Override

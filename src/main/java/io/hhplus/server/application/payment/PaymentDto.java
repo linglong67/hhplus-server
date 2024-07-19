@@ -7,6 +7,7 @@ import lombok.Getter;
 @Getter
 @Builder
 public class PaymentDto {
+    private long id;
     private long reservationId;
     private long userId;
     private String status;
@@ -14,6 +15,7 @@ public class PaymentDto {
 
     public Payment toDomain() {
         return Payment.builder()
+                      .id(id)
                       .reservationId(reservationId)
                       .userId(userId)
                       .paidPrice(paidPrice)
@@ -22,6 +24,7 @@ public class PaymentDto {
 
     public static PaymentDto toDto(Payment payment) {
         return PaymentDto.builder()
+                         .id(payment.getId())
                          .reservationId(payment.getReservationId())
                          .userId(payment.getUserId())
                          .status(payment.getStatus().name())

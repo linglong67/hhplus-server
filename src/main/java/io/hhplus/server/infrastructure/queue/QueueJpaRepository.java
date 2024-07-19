@@ -17,7 +17,7 @@ public interface QueueJpaRepository extends JpaRepository<QueueEntity, Long> {
 
     Optional<QueueEntity> findByUserIdAndToken(long userId, String token);
 
-    long findFirstByStatusIsOrderByIdDesc(Queue.Status status);
+    Optional<QueueEntity> findFirstByStatusIsOrderByIdDesc(Queue.Status status);
 
     Optional<QueueEntity> findByToken(String token);
 }

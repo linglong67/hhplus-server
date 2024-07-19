@@ -18,7 +18,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @Transactional
-public class QueueIntegrationTest {
+class QueueIntegrationTest {
 
     @Autowired
     private QueueFacade queueFacade;
@@ -30,7 +30,7 @@ public class QueueIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        queueRepository.deleteAll();  // 데이터베이스 초기화
+        queueRepository.deleteAll();  // 초기화
         testQueue = Queue.builder()
                          .userId(1L)
                          .token("testToken")
@@ -53,7 +53,7 @@ public class QueueIntegrationTest {
         assertNotNull(queueDto);
         assertNotNull(queueDto.getToken());
         assertEquals(userId, queueDto.getUserId());
-        assertEquals(Queue.Status.WAITING, queueDto.getStatus());
+        assertEquals(Queue.Status.WAITING.name(), queueDto.getStatus());
     }
 
     @Test
@@ -70,7 +70,7 @@ public class QueueIntegrationTest {
         assertNotNull(queueDto);
         assertEquals(userId, queueDto.getUserId());
         assertEquals(token, queueDto.getToken());
-        assertEquals(Queue.Status.WAITING, queueDto.getStatus());
+        assertEquals(Queue.Status.WAITING.name(), queueDto.getStatus());
     }
 
     @Test

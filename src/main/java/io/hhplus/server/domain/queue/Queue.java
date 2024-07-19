@@ -33,6 +33,7 @@ public class Queue {
 
     public void activate() {
         this.status = Status.ACTIVE;
+        this.activatedAt = LocalDateTime.now();
     }
 
     public void expire() {

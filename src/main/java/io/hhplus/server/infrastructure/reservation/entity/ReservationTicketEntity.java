@@ -2,8 +2,10 @@ package io.hhplus.server.infrastructure.reservation.entity;
 
 import io.hhplus.server.domain.reservation.Reservation;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+@Getter
 @Entity
 @Table(name = "reservation_ticket")
 @NoArgsConstructor

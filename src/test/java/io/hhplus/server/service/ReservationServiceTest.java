@@ -31,8 +31,11 @@ class ReservationServiceTest {
     @DisplayName("예약")
     void reserve_success() {
         //given
-        String token = "testToken";
-        Reservation reservation = Reservation.builder().build();
+        Reservation.Ticket ticket = Reservation.Ticket
+                .builder().concertSeatId(1L).seatId(1L).seatNo(1).price(10000).build();
+        Reservation reservation = Reservation
+                .builder().concertScheduleId(1L).tickets(List.of(ticket)).build();
+
         when(reservationRepository.reserve(reservation)).thenReturn(reservation);
 
         //when
