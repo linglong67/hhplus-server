@@ -1,5 +1,7 @@
 package io.hhplus.server.application.reservation;
 
+import io.hhplus.server.domain.concert.ConcertInfo;
+import io.hhplus.server.domain.concert.ConcertSeatInfo;
 import io.hhplus.server.domain.concert.ConcertService;
 import io.hhplus.server.domain.reservation.Reservation;
 import io.hhplus.server.domain.reservation.ReservationService;
@@ -20,10 +22,11 @@ public class ReservationFacade {
     public ReservationDto reserveSeat(ReservationDto dto) {
         concertService.assignSeats(dto.getConcertSeatIds());
 
-        concertService.getConcertInfo(dto.getConcertScheduleId());
-        concertService.getConcertSeatInfo(dto.getConcertSeatIds());
+        ConcertInfo concertInfo = concertService.getConcertInfo(dto.getConcertScheduleId());
+        List<ConcertSeatInfo> concertSeatInfo = concertService.getConcertSeatInfo(dto.getConcertSeatIds());
 
-        return ReservationDto.toDto(reservationService.reserve(dto.toDomain()));
+        return ReservationDto.toDto(reservationService.reserve(
+                dto.toDomain(dto.getUserId(), concertInfo, concertSeatInfo)));
     }
 
     // 좌석 임시 배정 만료
@@ -32,10 +35,7 @@ public class ReservationFacade {
         List<Reservation> reservations = reservationService.findUnpaidUsersWithin10MinutesOfReservation();
         reservationService.cancelReservation(reservations);
 
-        List<Long> releaseTargets =
-                reservations.stream()
-                            .flatMap(reservation -> reservation.getConcertSeatIds().stream())
-                            .toList();
+        List<Long> releaseTargets = reservationService.getConcertSeatIds(reservations.stream().map(Reservation::getId).toList());
         concertService.releaseSeatHolds(releaseTargets);
     }
 }

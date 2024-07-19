@@ -8,7 +8,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Entity
 @Table(name = "reservation")
@@ -60,8 +59,6 @@ public class ReservationEntity {
         entity.updatedBy = reservation.getUpdatedBy();
         entity.createdAt = reservation.getCreatedAt();
         entity.updatedAt = reservation.getUpdatedAt();
-//        // TODO:: ReservationTicket 과의 관계를 어떻게 풀어낼까?
-//        entity.concertSeatIds = reservation.getConcertSeatIds();    //FIXME:
 
         return entity;
     }
@@ -82,7 +79,6 @@ public class ReservationEntity {
                           .updatedAt(entity.updatedAt)
                           .createdBy(entity.createdBy)
                           .updatedBy(entity.updatedBy)
-//                          .concertSeatIds(entity.concertSeatIds)
                           .build();
     }
 }

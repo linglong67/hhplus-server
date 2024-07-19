@@ -32,14 +32,13 @@ public class ConcertService {
                               .map(concertSeatId -> {
                                   try {
                                       Optional<ConcertSeat> concertSeat = concertRepository.findConcertSeat(concertSeatId);
-                                      if(concertSeat.isEmpty()) {
+                                      if (concertSeat.isEmpty()) {
                                           throw new BusinessException(ErrorCode.CONCERT_SEAT_NOT_FOUND);
                                       }
 
                                       ConcertSeat seat = concertSeat.get();
                                       seat.assign();
                                       return concertRepository.update(seat);
-
                                   } catch (ObjectOptimisticLockingFailureException e) {
                                       throw new BusinessException(ErrorCode.CONCERT_SEAT_ALREADY_OCCUPIED);
                                   }
@@ -63,25 +62,27 @@ public class ConcertService {
         }
     }
 
-    public Optional<ConcertSeat> findConcertSeatById(Long concertSeatId) {
-        return concertRepository.findConcertSeat(concertSeatId);
-    }
-
-    public void getConcertInfo(long concertScheduleId) {
+    public ConcertInfo getConcertInfo(long concertScheduleId) {
         Optional<ConcertSchedule> concertSchedule = concertRepository.findConcertSchedule(concertScheduleId);
 
-        if(concertSchedule.isEmpty()) {
+        if (concertSchedule.isEmpty()) {
             throw new BusinessException(ErrorCode.CONCERT_SCHEDULE_NOT_FOUND);
         }
 
         Optional<Concert> concert = concertRepository.findConcert(concertSchedule.get().getConcertId());
         Optional<Place> place = concertRepository.findPlace(concertSchedule.get().getPlaceId());
+
+        return ConcertInfo.createConcertInfo(concert.get(), concertSchedule.get(), place.get());
     }
 
-    public void getConcertSeatInfo(List<Long> concertSeatIds) {
-        for(Long concertSeatId : concertSeatIds) {
-            Optional<ConcertSeat> concertSeat = concertRepository.findConcertSeat(concertSeatId);
-            concertRepository.findSeat(concertSeat.get().getSeatId());
-        }
+    public List<ConcertSeatInfo> getConcertSeatInfo(List<Long> concertSeatIds) {
+        return concertSeatIds.stream()
+                             .map(concertSeatId -> {
+                                 Optional<ConcertSeat> concertSeat = concertRepository.findConcertSeat(concertSeatId);
+                                 Optional<Place.Seat> seat = concertRepository.findSeat(concertSeat.get().getSeatId());
+
+                                 return ConcertSeatInfo.createConcertSeatInfo(concertSeat.get(), seat.get());
+                             })
+                             .toList();
     }
 }

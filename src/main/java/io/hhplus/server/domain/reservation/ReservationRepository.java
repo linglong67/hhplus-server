@@ -14,4 +14,6 @@ public interface ReservationRepository {
     List<Reservation> findAllByStatusIsAndCreatedAtBefore(Reservation.Status status, LocalDateTime validationTime);
 
     List<Reservation.Ticket> issueTickets(List<Reservation.Ticket> tickets);
+
+    List<Long> getConcertSeatIds(List<Long> reservationIds);
 }

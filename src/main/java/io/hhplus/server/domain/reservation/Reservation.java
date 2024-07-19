@@ -26,8 +26,6 @@ public class Reservation {
     private String updatedBy;
     private LocalDateTime updatedAt;
 
-    // FIXME: 아래꺼는 삭제해야함
-    private List<Long> concertSeatIds;
     private List<Ticket> tickets;
 
     public enum Status {
@@ -45,6 +43,10 @@ public class Reservation {
         private Long seatId;
         private Integer seatNo;
         private Integer price;
+
+        public void updateReservationId(Long reservationId) {
+            this.reservationId = reservationId;
+        }
     }
 
     public void isPaymentProcessable() {
@@ -55,5 +57,9 @@ public class Reservation {
 
     public void updateStatus(Status status) {
         this.status = status;
+    }
+
+    public void calculateTotalPrice() {
+        this.totalPrice = this.tickets.stream().map(Ticket::getPrice).reduce(0, Integer::sum);
     }
 }

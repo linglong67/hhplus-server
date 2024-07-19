@@ -18,8 +18,10 @@ public class ReservationService {
 
     public Reservation reserve(Reservation reservation) {
         reservation.updateStatus(Reservation.Status.RESERVED);
+        reservation.calculateTotalPrice();
         Reservation reservationInfo = reservationRepository.reserve(reservation);
 
+        reservation.getTickets().forEach(ticket -> ticket.updateReservationId(reservationInfo.getId()));
         reservationRepository.issueTickets(reservation.getTickets());
 
         return reservationInfo;
@@ -48,5 +50,9 @@ public class ReservationService {
             reservation.updateStatus(Reservation.Status.CANCELED);
             reservationRepository.update(reservation);
         }
+    }
+
+    public List<Long> getConcertSeatIds(List<Long> reservationIds) {
+        return reservationRepository.getConcertSeatIds(reservationIds);
     }
 }

@@ -49,4 +49,9 @@ public class ReservationRepositoryImpl implements ReservationRepository {
         return reservationTicketRepository.saveAll(tickets.stream().map(ReservationTicketEntity::from).toList())
                                           .stream().map(ReservationTicketEntity::toDomain).toList();
     }
+
+    @Override
+    public List<Long> getConcertSeatIds(List<Long> reservationIds) {
+        return reservationTicketRepository.findAllByReservationIdIn(reservationIds);
+    }
 }

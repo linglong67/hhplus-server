@@ -11,6 +11,7 @@ public class ConcertSeat {
     private Long seatId;
     private Status status;
     private Integer price;
+    private Integer version;
 
     public enum Status {
         AVAILABLE,

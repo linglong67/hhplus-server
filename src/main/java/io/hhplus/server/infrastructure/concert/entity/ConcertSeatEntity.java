@@ -31,6 +31,7 @@ public class ConcertSeatEntity {
         entity.seatId = seat.getSeatId();
         entity.status = seat.getStatus();
         entity.price = seat.getPrice();
+        entity.version = seat.getVersion();
 
         return entity;
     }
@@ -42,6 +43,7 @@ public class ConcertSeatEntity {
                           .seatId(entity.seatId)
                           .status(entity.status)
                           .price(entity.price)
+                          .version(entity.version)
                           .build();
     }
 }
