@@ -7,16 +7,17 @@ import lombok.Getter;
 @Getter
 @Builder
 public class PaymentResponse {
-    long reservationId;
-    long userId;
-    String status;
-    int paidPrice;
+    private long reservationId;
+    private long userId;
+    private String status;
+    private int paidPrice;
 
     public static PaymentResponse toResponse(PaymentDto dto) {
         return PaymentResponse.builder()
                               .reservationId(dto.getReservationId())
                               .userId(dto.getUserId())
-                              .status(dto.getStatus().name())
+                              .status(dto.getStatus())
+                              .paidPrice(dto.getPaidPrice())
                               .build();
     }
 }

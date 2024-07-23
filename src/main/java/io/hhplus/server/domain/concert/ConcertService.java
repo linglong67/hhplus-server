@@ -1,5 +1,7 @@
 package io.hhplus.server.domain.concert;
 
+import io.hhplus.server.domain.common.exception.BusinessException;
+import io.hhplus.server.domain.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
@@ -29,15 +31,22 @@ public class ConcertService {
                 concertSeatIds.stream()
                               .map(concertSeatId -> {
                                   try {
-                                      return concertRepository.assignSeat(concertSeatId);
+                                      Optional<ConcertSeat> concertSeat = concertRepository.findConcertSeat(concertSeatId);
+                                      if (concertSeat.isEmpty()) {
+                                          throw new BusinessException(ErrorCode.CONCERT_SEAT_NOT_FOUND);
+                                      }
+
+                                      ConcertSeat seat = concertSeat.get();
+                                      seat.assign();
+                                      return concertRepository.update(seat);
                                   } catch (ObjectOptimisticLockingFailureException e) {
-                                      throw new IllegalStateException("이미 선택된 좌석");
+                                      throw new BusinessException(ErrorCode.CONCERT_SEAT_ALREADY_OCCUPIED);
                                   }
                               })
                               .toList();
 
         if (assignedSeats.size() != concertSeatIds.size()) {
-            throw new IllegalStateException("이미 선택된 좌석이 포함되어 있음");
+            throw new BusinessException(ErrorCode.CONCERT_SEAT_NOT_AVAILABLE);
         }
     }
 
@@ -53,7 +62,27 @@ public class ConcertService {
         }
     }
 
-    public Optional<ConcertSeat> findConcertSeatById(Long concertSeatId) {
-        return concertRepository.findConcertSeat(concertSeatId);
+    public ConcertInfo getConcertInfo(long concertScheduleId) {
+        Optional<ConcertSchedule> concertSchedule = concertRepository.findConcertSchedule(concertScheduleId);
+
+        if (concertSchedule.isEmpty()) {
+            throw new BusinessException(ErrorCode.CONCERT_SCHEDULE_NOT_FOUND);
+        }
+
+        Optional<Concert> concert = concertRepository.findConcert(concertSchedule.get().getConcertId());
+        Optional<Place> place = concertRepository.findPlace(concertSchedule.get().getPlaceId());
+
+        return ConcertInfo.createConcertInfo(concert.get(), concertSchedule.get(), place.get());
+    }
+
+    public List<ConcertSeatInfo> getConcertSeatInfo(List<Long> concertSeatIds) {
+        return concertSeatIds.stream()
+                             .map(concertSeatId -> {
+                                 Optional<ConcertSeat> concertSeat = concertRepository.findConcertSeat(concertSeatId);
+                                 Optional<Place.Seat> seat = concertRepository.findSeat(concertSeat.get().getSeatId());
+
+                                 return ConcertSeatInfo.createConcertSeatInfo(concertSeat.get(), seat.get());
+                             })
+                             .toList();
     }
 }

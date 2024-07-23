@@ -1,6 +1,6 @@
 package io.hhplus.server.integration;
 
-import io.hhplus.server.application.user.PointDto;
+import io.hhplus.server.application.user.UserDto;
 import io.hhplus.server.application.user.UserFacade;
 import io.hhplus.server.domain.user.User;
 import io.hhplus.server.domain.user.UserRepository;
@@ -33,24 +33,24 @@ class UserIntegrationTest {
     @Test
     @DisplayName("포인트 조회")
     void getPoint() {
-        PointDto pointDto = userFacade.getPoint(testUser.getId());
-        assertThat(pointDto).isNotNull();
-        assertThat(pointDto.getPoint()).isEqualTo(1000);
+        UserDto userDto = userFacade.getPoint(testUser.getId());
+        assertThat(userDto).isNotNull();
+        assertThat(userDto.getPoint()).isEqualTo(1000);
     }
 
     @Test
     @DisplayName("포인트 충전")
     void chargePoint() {
-        PointDto pointDto = userFacade.chargePoint(testUser.getId(), 500);
-        assertThat(pointDto).isNotNull();
-        assertThat(pointDto.getPoint()).isEqualTo(1500);
+        UserDto userDto = userFacade.chargePoint(testUser.getId(), 500);
+        assertThat(userDto).isNotNull();
+        assertThat(userDto.getPoint()).isEqualTo(1500);
     }
 
     @Test
     @DisplayName("포인트 사용")
     void usePoint() {
-        PointDto pointDto = userFacade.usePoint(testUser.getId(), 200);
-        assertThat(pointDto).isNotNull();
-        assertThat(pointDto.getPoint()).isEqualTo(800);
+        UserDto userDto = userFacade.usePoint(testUser.getId(), 200);
+        assertThat(userDto).isNotNull();
+        assertThat(userDto.getPoint()).isEqualTo(800);
     }
 }

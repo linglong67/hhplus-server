@@ -1,5 +1,7 @@
 package io.hhplus.server.domain.queue;
 
+import io.hhplus.server.domain.common.exception.BusinessException;
+import io.hhplus.server.domain.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -13,7 +15,6 @@ import java.util.Optional;
 public class QueueService {
     private final QueueRepository queueRepository;
 
-    private static final int MAX_QUEUE_SIZE = 50;
     private static final int MAX_ACTIVE_MINUTES = 30;
 
     public Queue generateToken(long userId) {
@@ -25,20 +26,20 @@ public class QueueService {
 
     public long getQueueOrder(long userId, String token) {
         Queue queue = getQueue(userId, token);
-        long lastActiveUserTokenId = queueRepository.getLastActiveUserTokenId();
+        long lastActiveUserQueueId = queueRepository.getLastActiveUserQueueId();
 
-        return queue.getId() - lastActiveUserTokenId;
+        return queue.getId() - lastActiveUserQueueId;
     }
 
     public Queue getQueueInfo(long userId, String token) {
         return getQueue(userId, token);
     }
 
-    public void verifyQueue(long userId, String token) {
-        Queue queue = getQueue(userId, token);
+    public void verifyQueue(String token) {
+        Queue queue = getQueue(token);
 
         if (queue.getStatus() != Queue.Status.ACTIVE) {
-            throw new IllegalStateException("활성 토큰이 아님");
+            throw new BusinessException(ErrorCode.QUEUE_TOKEN_NOT_ACTIVE);
         }
     }
 
@@ -48,11 +49,22 @@ public class QueueService {
         queueRepository.save(queue);
     }
 
+    private Queue getQueue(String token) {
+        Optional<Queue> queue = queueRepository.getQueue(token);
+
+        if (queue.isEmpty()) {
+            throw new BusinessException(ErrorCode.QUEUE_TOKEN_NOT_FOUND);
+        }
+
+        return queue.get();
+    }
+
+    // FIXME: 삭제 고려 중
     private Queue getQueue(long userId, String token) {
         Optional<Queue> queue = queueRepository.getQueue(userId, token);
 
         if (queue.isEmpty()) {
-            throw new IllegalArgumentException("유효하지 않은 토큰 정보");
+            throw new BusinessException(ErrorCode.QUEUE_TOKEN_NOT_FOUND);
         }
 
         return queue.get();
@@ -60,12 +72,11 @@ public class QueueService {
 
     public List<Queue> findUsersToActivate() {
         int currentEntries = (int) queueRepository.countAllByStatusIs(Queue.Status.ACTIVE);
-        int entryLimit = MAX_QUEUE_SIZE - currentEntries;
-
-        long lastActiveUserTokenId = queueRepository.getLastActiveUserTokenId();
+        long lastActiveUserQueueId = queueRepository.getLastActiveUserQueueId();
 
         return queueRepository.findAllByStatusIsAndIdGreaterThanOrderByIdAsc(
-                Queue.Status.WAITING, lastActiveUserTokenId, PageRequest.of(0, entryLimit));
+                Queue.Status.WAITING, lastActiveUserQueueId,
+                PageRequest.of(0, Queue.calculateEntryLimit(currentEntries)));
     }
 
     public void activateTokens(List<Queue> queueList) {

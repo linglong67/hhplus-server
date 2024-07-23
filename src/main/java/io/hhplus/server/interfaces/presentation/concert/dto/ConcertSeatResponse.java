@@ -8,17 +8,17 @@ import lombok.Getter;
 @Builder
 public class ConcertSeatResponse {
     private long concertSeatId;
-    private long placeId;
+    private long concertScheduleId;
     private long seatId;
-    private long seatNo;
+    private String status;
     private int price;
 
     public static ConcertSeatResponse toResponse(ConcertSeatDto dto) {
         return ConcertSeatResponse.builder()
                                   .concertSeatId(dto.getConcertSeatId())
-                                  .placeId(dto.getPlaceId())
+                                  .concertScheduleId(dto.getConcertScheduleId())
                                   .seatId(dto.getSeatId())
-//                                  .seatNo(dto.getSeatNo())
+                                  .status(dto.getStatus())
                                   .price(dto.getPrice())
                                   .build();
     }

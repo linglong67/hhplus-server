@@ -10,17 +10,17 @@ public class UserFacade {
     private final UserService userService;
 
     // 포인트 조회
-    public PointDto getPoint(long userId) {
-        return PointDto.toDto(userService.getPoint(userId));
+    public UserDto getPoint(long userId) {
+        return UserDto.toDto(userService.getPoint(userId));
     }
 
     // 포인트 충전
-    public PointDto chargePoint(long userId, int amount) {
-        return PointDto.toDto(userService.chargePoint(userId, amount));
+    public UserDto chargePoint(long userId, int amount) {
+        return UserDto.toDto(userService.chargePoint(userId, amount));
     }
 
     // 포인트 사용
-    public PointDto usePoint(long userId, int amount) {
-        return PointDto.toDto(userService.usePoint(userId, amount));
+    public UserDto usePoint(long userId, int amount) {
+        return UserDto.toDto(userService.usePoint(userId, amount));
     }
 }

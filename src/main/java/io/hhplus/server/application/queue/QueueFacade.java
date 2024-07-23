@@ -44,4 +44,10 @@ public class QueueFacade {
         List<Queue> expireTargets = queueService.findActiveUsersForMoreThan30Minutes();
         queueService.expireTokens(expireTargets);
     }
+
+    // 토큰 검증
+    @Transactional(readOnly = true)
+    public void verifyQueue(String token) {
+        queueService.verifyQueue(token);
+    }
 }

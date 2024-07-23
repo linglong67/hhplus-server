@@ -16,8 +16,15 @@ public class QueueRepositoryImpl implements QueueRepository {
     private final QueueJpaRepository queueRepository;
 
     @Override
+    public Optional<Queue> getQueue(String token) {
+        return queueRepository.findByToken(token)
+                              .map(QueueEntity::toDomain);
+    }
+
+    @Override
     public Optional<Queue> getQueue(long userId, String token) {
-        return queueRepository.findByUserIdAndToken(userId, token);
+        return queueRepository.findByUserIdAndToken(userId, token)
+                              .map(QueueEntity::toDomain);
     }
 
     @Override
@@ -27,13 +34,17 @@ public class QueueRepositoryImpl implements QueueRepository {
     }
 
     @Override
-    public long getLastActiveUserTokenId() {
-        return 0;
+    public long getLastActiveUserQueueId() {
+        Optional<QueueEntity> entity = queueRepository.findFirstByStatusIsOrderByIdDesc(Queue.Status.ACTIVE);
+        return entity.map(QueueEntity::getId).orElse(0L);
     }
 
     @Override
     public List<Queue> findAllByStatusIsAndActivatedAtBefore(Queue.Status status, LocalDateTime validationTime) {
-        return queueRepository.findAllByStatusIsAndActivatedAtBefore(status, validationTime);
+        return queueRepository.findAllByStatusIsAndActivatedAtBefore(status, validationTime)
+                              .stream()
+                              .map(QueueEntity::toDomain)
+                              .toList();
     }
 
     @Override
@@ -42,8 +53,11 @@ public class QueueRepositoryImpl implements QueueRepository {
     }
 
     @Override
-    public List<Queue> findAllByStatusIsAndIdGreaterThanOrderByIdAsc(Queue.Status status, long lastActiveUserTokenId, PageRequest pageRequest) {
-        return queueRepository.findAllByStatusIsAndIdGreaterThanOrderByIdAsc(status, lastActiveUserTokenId, pageRequest);
+    public List<Queue> findAllByStatusIsAndIdGreaterThanOrderByIdAsc(Queue.Status status, long lastActiveUserQueueId, PageRequest pageRequest) {
+        return queueRepository.findAllByStatusIsAndIdGreaterThanOrderByIdAsc(status, lastActiveUserQueueId, pageRequest)
+                              .stream()
+                              .map(QueueEntity::toDomain)
+                              .toList();
     }
 
     @Override

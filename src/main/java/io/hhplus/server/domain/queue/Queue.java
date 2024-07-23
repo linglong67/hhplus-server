@@ -14,12 +14,16 @@ public class Queue {
     private String token;
     private Status status;
     private LocalDateTime activatedAt;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
     public enum Status {
         WAITING,
         ACTIVE,
         EXPIRED
     }
+
+    private static final int MAX_QUEUE_SIZE = 50;
 
     public void generate(long userId) {
         this.userId = userId;
@@ -29,9 +33,14 @@ public class Queue {
 
     public void activate() {
         this.status = Status.ACTIVE;
+        this.activatedAt = LocalDateTime.now();
     }
 
     public void expire() {
         this.status = Status.EXPIRED;
+    }
+
+    public static int calculateEntryLimit(int currentEntries) {
+        return MAX_QUEUE_SIZE - currentEntries;
     }
 }

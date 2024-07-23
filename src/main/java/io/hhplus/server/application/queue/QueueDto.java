@@ -9,14 +9,14 @@ import lombok.Getter;
 public class QueueDto {
     private long userId;
     private String token;
-    private Queue.Status status;
+    private String status;
     private long queueOrder;
 
     public static QueueDto toDto(Queue queue, long queueOrder) {
         return QueueDto.builder()
                        .userId(queue.getUserId())
                        .token(queue.getToken())
-                       .status(queue.getStatus())
+                       .status(queue.getStatus().name())
                        .queueOrder(queueOrder)
                        .build();
     }

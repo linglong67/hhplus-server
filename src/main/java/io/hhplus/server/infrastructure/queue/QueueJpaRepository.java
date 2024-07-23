@@ -9,11 +9,15 @@ import java.util.List;
 import java.util.Optional;
 
 public interface QueueJpaRepository extends JpaRepository<QueueEntity, Long> {
-    List<Queue> findAllByStatusIsAndActivatedAtBefore(Queue.Status status, LocalDateTime validationTime);
+    List<QueueEntity> findAllByStatusIsAndActivatedAtBefore(Queue.Status status, LocalDateTime validationTime);
 
     long countAllByStatusIs(Queue.Status status);
 
-    List<Queue> findAllByStatusIsAndIdGreaterThanOrderByIdAsc(Queue.Status status, long id, PageRequest pageRequest);
+    List<QueueEntity> findAllByStatusIsAndIdGreaterThanOrderByIdAsc(Queue.Status status, long id, PageRequest pageRequest);
 
-    Optional<Queue> findByUserIdAndToken(long userId, String token);
+    Optional<QueueEntity> findByUserIdAndToken(long userId, String token);
+
+    Optional<QueueEntity> findFirstByStatusIsOrderByIdDesc(Queue.Status status);
+
+    Optional<QueueEntity> findByToken(String token);
 }

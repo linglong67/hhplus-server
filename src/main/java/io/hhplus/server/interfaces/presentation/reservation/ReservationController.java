@@ -17,9 +17,7 @@ public class ReservationController {
 
     @PostMapping
     @Operation(summary = "예약", description = "콘서트 좌석을 예약하는 API")
-    public ReservationResponse reserveSeat(
-            @RequestHeader("Queue-Token") String token,
-            @RequestBody ReservationRequest request) {
-        return ReservationResponse.toResponse(reservationFacade.reserveSeat(token, ReservationRequest.toDto(request)));
+    public ReservationResponse reserveSeat(@RequestBody ReservationRequest request) {
+        return ReservationResponse.toResponse(reservationFacade.reserveSeat(ReservationRequest.toDto(request)));
     }
 }

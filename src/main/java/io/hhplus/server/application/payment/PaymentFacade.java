@@ -20,8 +20,6 @@ public class PaymentFacade {
     // 결제
     @Transactional
     public PaymentDto payment(String token, PaymentDto dto) {
-        queueService.verifyQueue(dto.getUserId(), token);
-
         userService.usePoint(dto.getUserId(), dto.getPaidPrice());
         Payment payment = paymentService.savePayment(dto.toDomain());
         reservationService.updateReservationStatus(dto.getReservationId());

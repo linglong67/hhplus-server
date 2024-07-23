@@ -1,5 +1,6 @@
 package io.hhplus.server.service;
 
+import io.hhplus.server.domain.common.exception.BusinessException;
 import io.hhplus.server.domain.user.User;
 import io.hhplus.server.domain.user.UserRepository;
 import io.hhplus.server.domain.user.UserService;
@@ -76,8 +77,7 @@ class UserServiceTest {
         //when & then
         when(userRepository.findById(userId)).thenReturn(Optional.of(User.builder().build()));
         assertThatThrownBy(() -> userService.chargePoint(userId, amount))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("충전/사용 포인트가 0 이하");
+                .isInstanceOf(BusinessException.class);
     }
 
     @Test
@@ -112,8 +112,7 @@ class UserServiceTest {
 
         //when & then
         assertThatThrownBy(() -> userService.usePoint(userId, amount))
-                .isInstanceOf(IllegalStateException.class)
-                .hasMessage("잔액 초과하여 사용 불가");
+                .isInstanceOf(BusinessException.class);
     }
 
     @Test
@@ -125,7 +124,6 @@ class UserServiceTest {
 
         //when & then
         assertThatThrownBy(() -> userService.getPoint(userId))
-                .isInstanceOf(IllegalArgumentException.class)
-                .hasMessage("존재하지 않는 사용자 ID");
+                .isInstanceOf(BusinessException.class);
     }
 }

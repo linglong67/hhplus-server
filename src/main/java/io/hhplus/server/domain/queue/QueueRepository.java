@@ -7,17 +7,19 @@ import java.util.List;
 import java.util.Optional;
 
 public interface QueueRepository {
+    Optional<Queue> getQueue(String token);
+
     Optional<Queue> getQueue(long userId, String token);
 
     Queue save(Queue queue);
 
-    long getLastActiveUserTokenId();
+    long getLastActiveUserQueueId();
 
     List<Queue> findAllByStatusIsAndActivatedAtBefore(Queue.Status status, LocalDateTime validationTime);
 
     long countAllByStatusIs(Queue.Status status);
 
-    List<Queue> findAllByStatusIsAndIdGreaterThanOrderByIdAsc(Queue.Status status, long lastActiveUserTokenId, PageRequest of);
+    List<Queue> findAllByStatusIsAndIdGreaterThanOrderByIdAsc(Queue.Status status, long lastActiveUserQueueId, PageRequest of);
 
     void deleteAll();
 
