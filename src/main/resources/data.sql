@@ -1,12 +1,13 @@
 -- Insert into user table
 INSERT INTO "user" (name, point) VALUES ('Alice', 21000);
-INSERT INTO "user" (name, point) VALUES ('Bob', 800);
+INSERT INTO "user" (name, point) VALUES ('Bob', 10800);
 INSERT INTO "user" (name, point) VALUES ('Charlie', 150000);
-INSERT INTO "user" (name, point) VALUES ('Diana', 500);
-INSERT INTO "user" (name, point) VALUES ('Eve', 1500);
+INSERT INTO "user" (name, point) VALUES ('Diana', 5000);
+INSERT INTO "user" (name, point) VALUES ('Eve', 17000);
 
 -- Insert info quque table
 INSERT INTO queue (user_id, token, status, activated_at, created_at, updated_at) VALUES (1, '4d51a296-d7da-4b0f-bc59-32ecd64a042a', 'ACTIVE', now(), now(), now());
+INSERT INTO queue (user_id, token, status, activated_at, created_at, updated_at) VALUES (2, '1df3dbdc-2dsf-3fdg-bd32-3dmsd32dfdk1', 'ACTIVE', now(), now(), now());
 
 -- Insert into place table
 INSERT INTO place (name) VALUES ('Stadium A');
@@ -147,7 +148,7 @@ INSERT INTO concert_seat (concert_schedule_id, seat_id, status, price, version) 
 INSERT INTO concert_seat (concert_schedule_id, seat_id, status, price, version) VALUES (1, 8, 'AVAILABLE', 10000, 1);
 INSERT INTO concert_seat (concert_schedule_id, seat_id, status, price, version) VALUES (1, 9, 'AVAILABLE', 10000, 1);
 INSERT INTO concert_seat (concert_schedule_id, seat_id, status, price, version) VALUES (1, 10, 'AVAILABLE', 10000, 1);
-INSERT INTO concert_seat (concert_schedule_id, seat_id, status, price, version) VALUES (1, 11, 'AVAILABLE', 10000, 1);
+INSERT INTO concert_seat (concert_schedule_id, seat_id, status, price, version) VALUES (1, 11, 'OCCUPIED', 10000, 1);
 INSERT INTO concert_seat (concert_schedule_id, seat_id, status, price, version) VALUES (1, 12, 'AVAILABLE', 10000, 1);
 INSERT INTO concert_seat (concert_schedule_id, seat_id, status, price, version) VALUES (1, 13, 'AVAILABLE', 10000, 1);
 INSERT INTO concert_seat (concert_schedule_id, seat_id, status, price, version) VALUES (1, 14, 'AVAILABLE', 10000, 1);
@@ -456,3 +457,8 @@ VALUES (1, 1, 1, 'Awesome Concert', 'Famous Band', '2024-08-01 19:00:00', 'Main 
 INSERT INTO reservation_ticket (reservation_id, concert_seat_id, seat_id, seat_no, price) VALUES (1, 4, 4, 4, 10000);
 
 INSERT INTO reservation_ticket (reservation_id, concert_seat_id, seat_id, seat_no, price) VALUES (1, 5, 5, 5, 10000);
+
+INSERT INTO reservation (user_id, concert_schedule_id, place_id, concert_title, concert_casting, concert_datetime, place_name, total_price, status, created_at, created_by, updated_by, updated_at)
+VALUES (2, 1, 1, 'Awesome Concert', 'Famous Band', '2024-08-01 19:00:00', 'Main Hall', 10000, 'RESERVED', now(), '2', '2', now());
+
+INSERT INTO reservation_ticket (reservation_id, concert_seat_id, seat_id, seat_no, price) VALUES (2, 11, 11, 11, 10000);
