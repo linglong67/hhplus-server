@@ -32,15 +32,15 @@ class PaymentIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        testQueue = queueService.generateToken(1L);
+        testQueue = queueService.generateToken(2L);
     }
 
     @Test
     @DisplayName("결제")
     void payment() {
         //given
-        long userId = 1L;
-        long reservationId = 1L;
+        long userId = 2L;
+        long reservationId = 2L;
         PaymentDto dto = PaymentDto.builder()
                                    .userId(userId)
                                    .reservationId(reservationId)

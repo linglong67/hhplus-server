@@ -94,9 +94,9 @@ class ReservationServiceTest {
         reservationService.cancelReservation(reservations);
 
         //then
-        for (Reservation reservation : reservations) {
+        reservations.forEach(reservation -> {
             verify(reservationRepository).update(reservation);
             assertThat(reservation.getStatus()).isEqualTo(Reservation.Status.CANCELED);
-        }
+        });
     }
 }

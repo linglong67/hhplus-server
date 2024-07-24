@@ -166,10 +166,10 @@ class QueueServiceTest {
         queueService.activateTokens(queueList);
 
         //then
-        for (Queue queue : queueList) {
+        queueList.forEach(queue -> {
             verify(queue).activate();
             verify(queueRepository).save(queue);
-        }
+        });
     }
 
     @Test
@@ -198,9 +198,9 @@ class QueueServiceTest {
         queueService.expireTokens(queueList);
 
         //then
-        for (Queue queue : queueList) {
+        queueList.forEach(queue -> {
             verify(queue).expire();
             verify(queueRepository).save(queue);
-        }
+        });
     }
 }

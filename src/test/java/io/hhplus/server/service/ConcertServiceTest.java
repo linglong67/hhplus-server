@@ -87,7 +87,7 @@ class ConcertServiceTest {
         //given
         List<Long> concertSeatIds = List.of(1L, 2L);
 
-        for (Long concertSeatId : concertSeatIds) {
+        concertSeatIds.forEach(concertSeatId -> {
             Optional<ConcertSeat> concertSeat = concertRepository.findConcertSeat(concertSeatId);
 
             if (concertSeat.isPresent()) {
@@ -95,7 +95,7 @@ class ConcertServiceTest {
                 seat.assign();
                 concertRepository.update(seat);
             }
-        }
+        });
 
         //when
         ArgumentCaptor<Long> concertSeatIdsCaptor = ArgumentCaptor.forClass(Long.class);
