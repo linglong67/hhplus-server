@@ -47,11 +47,11 @@ public class ReservationService {
     }
 
     public void cancelReservation(List<Reservation> reservations) {
-        for (Reservation reservation : reservations) {
+        reservations.forEach(reservation -> {
             reservation.updateStatus(Reservation.Status.CANCELED);
             reservation.markUpdater(UPDATED_BY_SYSTEM);
             reservationRepository.update(reservation);
-        }
+        });
     }
 
     public List<Long> getConcertSeatIds(List<Long> reservationIds) {

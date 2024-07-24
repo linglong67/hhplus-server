@@ -51,7 +51,7 @@ public class ConcertService {
     }
 
     public void releaseSeatHolds(List<Long> releaseTargets) {
-        for (Long releaseTarget : releaseTargets) {
+        releaseTargets.forEach(releaseTarget -> {
             Optional<ConcertSeat> concertSeat = concertRepository.findConcertSeat(releaseTarget);
 
             if (concertSeat.isPresent()) {
@@ -59,7 +59,7 @@ public class ConcertService {
                 seat.release();
                 concertRepository.update(seat);
             }
-        }
+        });
     }
 
     public ConcertInfo getConcertInfo(long concertScheduleId) {
