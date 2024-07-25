@@ -30,14 +30,15 @@ public class ConcertService {
         List<ConcertSeat> assignedSeats =
                 concertSeatIds.stream()
                               .map(concertSeatId -> {
-                                  try {
-                                      Optional<ConcertSeat> concertSeat = concertRepository.findConcertSeat(concertSeatId);
-                                      if (concertSeat.isEmpty()) {
-                                          throw new BusinessException(ErrorCode.CONCERT_SEAT_NOT_FOUND);
-                                      }
+                                  Optional<ConcertSeat> concertSeat = concertRepository.findConcertSeat(concertSeatId);
+                                  if (concertSeat.isEmpty()) {
+                                      throw new BusinessException(ErrorCode.CONCERT_SEAT_NOT_FOUND);
+                                  }
 
-                                      ConcertSeat seat = concertSeat.get();
-                                      seat.assign();
+                                  ConcertSeat seat = concertSeat.get();
+                                  seat.assign();
+
+                                  try {
                                       return concertRepository.update(seat);
                                   } catch (ObjectOptimisticLockingFailureException e) {
                                       throw new BusinessException(ErrorCode.CONCERT_SEAT_ALREADY_OCCUPIED);
