@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.concurrent.CompletableFuture;
+
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -52,5 +54,34 @@ class UserIntegrationTest {
         UserDto userDto = userFacade.usePoint(testUser.getId(), 200);
         assertThat(userDto).isNotNull();
         assertThat(userDto.getPoint()).isEqualTo(800);
+    }
+
+    @Test
+    @DisplayName("포인트 충전/사용 동시성 테스트")
+    void use_charge_point_with_optimistic_lock() {
+        // given
+        long userId = 1L; // point → 21000
+
+        // when
+        CompletableFuture.allOf(
+                CompletableFuture.runAsync(() -> {
+                    userFacade.usePoint(userId, 500);
+                }),
+                CompletableFuture.runAsync(() -> {
+                    userFacade.chargePoint(userId, 8000);
+                }),
+                CompletableFuture.runAsync(() -> {
+                    userFacade.usePoint(userId, 8000);
+                }),
+                CompletableFuture.runAsync(() -> {
+                    userFacade.usePoint(userId, 7000);
+                }),
+                CompletableFuture.runAsync(() -> {
+                    userFacade.chargePoint(userId, 10000);
+                })
+        ).join();
+
+        // then
+        assertThat(userFacade.getPoint(userId).getPoint()).isEqualTo(21000 - 500 + 8000 - 8000 - 7000 + 10000);
     }
 }
