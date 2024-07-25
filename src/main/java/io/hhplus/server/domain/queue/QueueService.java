@@ -80,10 +80,10 @@ public class QueueService {
     }
 
     public void activateTokens(List<Queue> queueList) {
-        for(Queue queue : queueList) {
+        queueList.forEach(queue -> {
             queue.activate();
             queueRepository.save(queue);
-        }
+        });
     }
 
     public List<Queue> findActiveUsersForMoreThan30Minutes() {
@@ -91,9 +91,9 @@ public class QueueService {
     }
 
     public void expireTokens(List<Queue> queueList) {
-        for(Queue queue : queueList) {
+        queueList.forEach(queue -> {
             queue.expire();
             queueRepository.save(queue);
-        }
+        });
     }
 }
