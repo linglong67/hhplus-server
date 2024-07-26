@@ -1,9 +1,9 @@
 -- Insert into user table
-INSERT INTO "user" (name, point) VALUES ('Alice', 21000);
-INSERT INTO "user" (name, point) VALUES ('Bob', 10800);
-INSERT INTO "user" (name, point) VALUES ('Charlie', 150000);
-INSERT INTO "user" (name, point) VALUES ('Diana', 5000);
-INSERT INTO "user" (name, point) VALUES ('Eve', 17000);
+INSERT INTO "user" (name, point, version) VALUES ('Alice', 21000, 1);
+INSERT INTO "user" (name, point, version) VALUES ('Bob', 10800, 1);
+INSERT INTO "user" (name, point, version) VALUES ('Charlie', 150000, 1);
+INSERT INTO "user" (name, point, version) VALUES ('Diana', 5000, 1);
+INSERT INTO "user" (name, point, version) VALUES ('Eve', 17000, 1);
 
 -- Insert info quque table
 INSERT INTO queue (user_id, token, status, activated_at, created_at, updated_at) VALUES (1, '4d51a296-d7da-4b0f-bc59-32ecd64a042a', 'ACTIVE', now(), now(), now());

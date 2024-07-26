@@ -3,6 +3,7 @@ package io.hhplus.server.application.user;
 import io.hhplus.server.domain.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Component
 @RequiredArgsConstructor
@@ -20,6 +21,7 @@ public class UserFacade {
     }
 
     // 포인트 사용
+    @Transactional
     public UserDto usePoint(long userId, int amount) {
         return UserDto.toDto(userService.usePoint(userId, amount));
     }

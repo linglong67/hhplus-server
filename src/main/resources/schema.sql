@@ -1,8 +1,9 @@
 CREATE TABLE "user"
 (
-    id    BIGINT AUTO_INCREMENT,
-    name  VARCHAR(50),
-    point INT,
+    id      BIGINT AUTO_INCREMENT,
+    name    VARCHAR(50),
+    point   INT,
+    version INT,
     PRIMARY KEY (id)
 );
 

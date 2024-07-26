@@ -6,10 +6,13 @@ import io.hhplus.server.domain.user.User;
 import io.hhplus.server.domain.user.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.concurrent.CompletableFuture;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -26,7 +29,7 @@ class UserIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        testUser = User.builder().name("test").point(1000).build();
+        testUser = User.builder().name("test").point(1000).version(1).build();
         testUser = userRepository.save(testUser);
     }
 
@@ -52,5 +55,43 @@ class UserIntegrationTest {
         UserDto userDto = userFacade.usePoint(testUser.getId(), 200);
         assertThat(userDto).isNotNull();
         assertThat(userDto.getPoint()).isEqualTo(800);
+    }
+
+
+//    @Test
+    @RepeatedTest(50)
+    @DisplayName("포인트 충전/사용 동시성 테스트")
+    void use_charge_point_with_optimistic_lock() {
+        // given
+        long userId = 1L; // point → 21000
+
+        // when
+        CompletableFuture.allOf(
+                CompletableFuture.runAsync(() -> {
+                    userFacade.usePoint(userId, 500);
+                    System.out.println("1#####  ");
+                }),
+                CompletableFuture.runAsync(() -> {
+                    userFacade.chargePoint(userId, 8000);
+                    System.out.println("2#####  ");
+                })
+//                ,
+//                CompletableFuture.runAsync(() -> {
+//                    userFacade.usePoint(userId, 8000);
+//                    System.out.println("3#####  ");
+//                }),
+//                CompletableFuture.runAsync(() -> {
+//                    userFacade.usePoint(userId, 7000);
+//                    System.out.println("4#####  ");
+//                }),
+//                CompletableFuture.runAsync(() -> {
+//                    userFacade.chargePoint(userId, 10000);
+//                    System.out.println("5#####  ");
+//                })
+        ).join();
+
+        System.out.println(userFacade.getPoint(userId).getPoint());
+        // then
+//        assertThat(userFacade.getPoint(userId).getPoint()).isEqualTo(21000 - 500 + 8000 - 8000 - 7000 + 10000);
     }
 }

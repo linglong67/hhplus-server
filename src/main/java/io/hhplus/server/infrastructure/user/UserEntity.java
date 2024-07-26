@@ -16,11 +16,15 @@ public class UserEntity {
 
     private Integer point;
 
+    @Version
+    private Integer version;
+
     public static UserEntity from(User user) {
         UserEntity entity = new UserEntity();
         entity.id = user.getId();
         entity.name = user.getName();
         entity.point = user.getPoint();
+        entity.version = user.getVersion();
 
         return entity;
     }
@@ -30,6 +34,7 @@ public class UserEntity {
                    .id(entity.id)
                    .name(entity.name)
                    .point(entity.point)
+                   .version(entity.version)
                    .build();
     }
 }

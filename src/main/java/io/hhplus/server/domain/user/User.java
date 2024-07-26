@@ -11,6 +11,7 @@ public class User {
     private Long id;
     private String name;
     private Integer point;
+    private Integer version;
 
     public void chargePoint(int amount) {
         if (amount <= 0) {
