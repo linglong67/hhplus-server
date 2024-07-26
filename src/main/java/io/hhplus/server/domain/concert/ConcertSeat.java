@@ -1,5 +1,7 @@
 package io.hhplus.server.domain.concert;
 
+import io.hhplus.server.domain.common.exception.BusinessException;
+import io.hhplus.server.domain.common.exception.ErrorCode;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -19,6 +21,9 @@ public class ConcertSeat {
     }
 
     public void assign() {
+        if (this.status == Status.OCCUPIED) {
+            throw new BusinessException(ErrorCode.CONCERT_SEAT_ALREADY_OCCUPIED);
+        }
         this.status = Status.OCCUPIED;
     }
 

@@ -51,7 +51,7 @@ public class ConcertRepositoryImpl implements ConcertRepository {
 
     @Override
     public Optional<ConcertSeat> findConcertSeat(Long concertSeatId) {
-        return concertSeatRepository.findById(concertSeatId).map(ConcertSeatEntity::toDomain);
+        return concertSeatRepository.findByIdWithPessimisticLock(concertSeatId).map(ConcertSeatEntity::toDomain);
     }
 
     @Override

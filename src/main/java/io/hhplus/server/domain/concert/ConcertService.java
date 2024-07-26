@@ -3,7 +3,6 @@ package io.hhplus.server.domain.concert;
 import io.hhplus.server.domain.common.exception.BusinessException;
 import io.hhplus.server.domain.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -30,18 +29,14 @@ public class ConcertService {
         List<ConcertSeat> assignedSeats =
                 concertSeatIds.stream()
                               .map(concertSeatId -> {
-                                  try {
-                                      Optional<ConcertSeat> concertSeat = concertRepository.findConcertSeat(concertSeatId);
-                                      if (concertSeat.isEmpty()) {
-                                          throw new BusinessException(ErrorCode.CONCERT_SEAT_NOT_FOUND);
-                                      }
-
-                                      ConcertSeat seat = concertSeat.get();
-                                      seat.assign();
-                                      return concertRepository.update(seat);
-                                  } catch (ObjectOptimisticLockingFailureException e) {
-                                      throw new BusinessException(ErrorCode.CONCERT_SEAT_ALREADY_OCCUPIED);
+                                  Optional<ConcertSeat> concertSeat = concertRepository.findConcertSeat(concertSeatId);
+                                  if (concertSeat.isEmpty()) {
+                                      throw new BusinessException(ErrorCode.CONCERT_SEAT_NOT_FOUND);
                                   }
+
+                                  ConcertSeat seat = concertSeat.get();
+                                  seat.assign();
+                                  return concertRepository.update(seat);
                               })
                               .toList();
 
