@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class ReservationScheduler {
     private final ReservationFacade reservationFacade;
 
-    @Scheduled(fixedDelay = 5000)
+    @Scheduled(fixedDelay = 5 * 1000)
     public void releaseSeatHolds() {
         reservationFacade.releaseSeatHolds();
     }

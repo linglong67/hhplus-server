@@ -4,7 +4,6 @@ import io.hhplus.server.domain.common.exception.BusinessException;
 import io.hhplus.server.domain.user.User;
 import io.hhplus.server.domain.user.UserRepository;
 import io.hhplus.server.domain.user.UserService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -43,7 +42,7 @@ class UserServiceTest {
                             .build();
 
         //when
-        when(userRepository.findById(userId)).thenReturn(Optional.ofNullable(expected));
+        when(userRepository.findByIdWithPessimisticLock(userId)).thenReturn(Optional.ofNullable(expected));
 
         //then
         assertThat(userService.getPoint(userId)).isEqualTo(expected);
@@ -56,7 +55,7 @@ class UserServiceTest {
         long userId = 1L;
         int amount = 100;
         User user = User.builder().id(userId).point(0).build();
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(userRepository.findByIdWithPessimisticLock(userId)).thenReturn(Optional.of(user));
         when(userRepository.save(any(User.class))).thenReturn(user);
 
         //when
@@ -75,7 +74,7 @@ class UserServiceTest {
         int amount = -100;
 
         //when & then
-        when(userRepository.findById(userId)).thenReturn(Optional.of(User.builder().build()));
+        when(userRepository.findByIdWithPessimisticLock(userId)).thenReturn(Optional.of(User.builder().build()));
         assertThatThrownBy(() -> userService.chargePoint(userId, amount))
                 .isInstanceOf(BusinessException.class);
     }
@@ -90,7 +89,7 @@ class UserServiceTest {
         user.chargePoint(100);
 
         //when
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(userRepository.findByIdWithPessimisticLock(userId)).thenReturn(Optional.of(user));
         when(userRepository.save(any(User.class))).thenReturn(user);
         User result = userService.usePoint(userId, amount);
 
@@ -108,7 +107,7 @@ class UserServiceTest {
         User user = User.builder().id(userId).point(0).build();
 
         user.chargePoint(100);
-        when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+        when(userRepository.findByIdWithPessimisticLock(userId)).thenReturn(Optional.of(user));
 
         //when & then
         assertThatThrownBy(() -> userService.usePoint(userId, amount))
@@ -120,7 +119,7 @@ class UserServiceTest {
     void getUser_failure_nonexistentUser() {
         //given
         long userId = 1L;
-        when(userRepository.findById(userId)).thenReturn(Optional.empty());
+        when(userRepository.findByIdWithPessimisticLock(userId)).thenReturn(Optional.empty());
 
         //when & then
         assertThatThrownBy(() -> userService.getPoint(userId))

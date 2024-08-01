@@ -10,7 +10,6 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.orm.ObjectOptimisticLockingFailureException;
 
 import java.time.LocalDateTime;
 import java.util.Arrays;
@@ -122,7 +121,6 @@ class ConcertServiceTest {
         );
 
         when(concertRepository.findConcertSeat(1L)).thenReturn(seat);
-        when(concertRepository.update(seat.get())).thenThrow(ObjectOptimisticLockingFailureException.class);
 
         //when & then
         BusinessException exception =
