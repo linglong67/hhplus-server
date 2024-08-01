@@ -3,6 +3,7 @@ package io.hhplus.server.domain.concert;
 import io.hhplus.server.domain.common.exception.BusinessException;
 import io.hhplus.server.domain.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.orm.ObjectOptimisticLockingFailureException;
 import org.springframework.stereotype.Service;
 
@@ -14,10 +15,12 @@ import java.util.Optional;
 public class ConcertService {
     private final ConcertRepository concertRepository;
 
+    @Cacheable(cacheNames = "concerts", key = "#root.methodName", cacheManager = "redisCacheManager")
     public List<Concert> getConcerts() {
         return concertRepository.findAll();
     }
 
+    @Cacheable(cacheNames = "concert-schedules", key = "#concertId", cacheManager = "redisCacheManager")
     public List<ConcertSchedule> getAvailableDates(long concertId) {
         return concertRepository.getAvailableDates(concertId);
     }
