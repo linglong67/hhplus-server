@@ -2,115 +2,99 @@ package io.hhplus.server.integration;
 
 import io.hhplus.server.application.queue.QueueDto;
 import io.hhplus.server.application.queue.QueueFacade;
-import io.hhplus.server.domain.queue.Queue;
-import io.hhplus.server.domain.queue.QueueRepository;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.SetOperations;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 @SpringBootTest
 @Transactional
 class QueueIntegrationTest {
-
     @Autowired
     private QueueFacade queueFacade;
 
     @Autowired
-    private QueueRepository queueRepository;
+    private RedisTemplate<String, String> redisTemplate;
 
-    private Queue testQueue;
+    private static final String QUEUE = "queue";
+    private static final String ACTIVE_TOKEN = "active-token";
 
-    @BeforeEach
-    void setUp() {
-        queueRepository.deleteAll();  // 초기화
-        testQueue = Queue.builder()
-                         .userId(1L)
-                         .token("testToken")
-                         .status(Queue.Status.WAITING)
-                         .activatedAt(LocalDateTime.now())
-                         .build();
-        queueRepository.save(testQueue);  // 초기 큐 데이터 설정
+    @AfterEach
+    void tearDown() {
+        redisTemplate.delete(QUEUE);
+        redisTemplate.delete(ACTIVE_TOKEN);
     }
 
     @Test
     @DisplayName("토큰 발급 (생성)")
-    void generateToken() {
-        //given
-        long userId = 1L;
-
-        //when
-        QueueDto queueDto = queueFacade.generateToken(userId);
+    void addQueue() {
+        //given & when
+        QueueDto queueDto = queueFacade.addQueue(1L);
 
         //then
         assertNotNull(queueDto);
         assertNotNull(queueDto.getToken());
-        assertEquals(userId, queueDto.getUserId());
-        assertEquals(Queue.Status.WAITING.name(), queueDto.getStatus());
     }
 
     @Test
     @DisplayName("토큰 정보 조회")
-    void getQueueInfo() {
+    void getQueueOrder() {
         //given
-        String token = testQueue.getToken();
-        long userId = testQueue.getUserId();
+        queueFacade.addQueue(1L);
+        queueFacade.addQueue(2L);
+
+        ZSetOperations<String, String> zSetOps = redisTemplate.opsForZSet();
+        String token = zSetOps.randomMember(QUEUE);
 
         //when
-        QueueDto queueDto = queueFacade.getQueueInfo(userId, token);
+        QueueDto queueDto = queueFacade.getQueueOrder(token);
 
         //then
-        assertNotNull(queueDto);
-        assertEquals(userId, queueDto.getUserId());
-        assertEquals(token, queueDto.getToken());
-        assertEquals(Queue.Status.WAITING.name(), queueDto.getStatus());
+        assertThat(queueDto.getToken()).isEqualTo(token);
     }
 
     @Test
     @DisplayName("토큰 활성화")
     void activateTokens() {
         //given
-        Queue waitingQueue = Queue.builder()
-                                  .userId(2L)
-                                  .token("newToken")
-                                  .status(Queue.Status.WAITING)
-                                  .build();
-        Queue queue = queueRepository.save(waitingQueue);
+        queueFacade.addQueue(1L);
+        queueFacade.addQueue(2L);
+
+        ZSetOperations<String, String> zSetOps = redisTemplate.opsForZSet();
+        SetOperations<String, String> setOps = redisTemplate.opsForSet();
+        Long queueSize = zSetOps.size(QUEUE);
+        Long activeTokenSize = setOps.size(ACTIVE_TOKEN);
 
         //when
         queueFacade.activateTokens();
 
         //then
-        Queue updatedQueue = queueRepository.findById(queue.getId()).orElse(null);
-        assertNotNull(updatedQueue);
-        assertEquals(Queue.Status.ACTIVE, updatedQueue.getStatus());
+        assertThat(zSetOps.size(QUEUE)).isLessThan(queueSize);
+        assertThat(setOps.size(ACTIVE_TOKEN)).isGreaterThan(activeTokenSize);
     }
 
     @Test
     @DisplayName("토큰 만료")
     void expireTokens() {
         //given
-        Queue activeQueue = Queue.builder()
-                                 .userId(3L)
-                                 .token("activeToken")
-                                 .status(Queue.Status.ACTIVE)
-                                 .activatedAt(LocalDateTime.now().minusMinutes(31))
-                                 .build();
-        Queue quque = queueRepository.save(activeQueue);
+        long currentTime = System.currentTimeMillis();
+        SetOperations<String, String> setOps = redisTemplate.opsForSet();
+        setOps.add(ACTIVE_TOKEN, "testToken1:" + (currentTime - 30 * 60 * 1000));
+        setOps.add(ACTIVE_TOKEN, "testToken2:" + currentTime);
 
         //when
         queueFacade.expireTokens();
 
         //then
-        Queue updatedQueue = queueRepository.findById(quque.getId()).orElse(null);
-        assertNotNull(updatedQueue);
-        assertEquals(Queue.Status.EXPIRED, updatedQueue.getStatus());
+        assertThat(setOps.isMember(ACTIVE_TOKEN, "testToken1:" + (currentTime - 30 * 60 * 1000))).isFalse();
+        assertThat(setOps.isMember(ACTIVE_TOKEN, "testToken2:" + currentTime)).isTrue();
     }
 }
