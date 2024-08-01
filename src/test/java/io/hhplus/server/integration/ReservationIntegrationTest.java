@@ -18,6 +18,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -65,7 +70,7 @@ class ReservationIntegrationTest {
                                  .tickets(List.of(Reservation.Ticket.builder().concertSeatId(4L).build(),
                                          Reservation.Ticket.builder().concertSeatId(5L).build()))
                                  .createdAt(LocalDateTime.now().minusMinutes(11))
-                .build();
+                                 .build();
     }
 
     @Test
@@ -101,5 +106,39 @@ class ReservationIntegrationTest {
         concertSeatIds.forEach(concertSeatId ->
                 assertEquals(ConcertSeat.Status.AVAILABLE, concertRepository.findConcertSeat(concertSeatId).get().getStatus())
         );
+    }
+
+    @Test
+    @DisplayName("좌석 예약 동시성 테스트")
+    void reserveSeat_with_optimistic_lock() throws InterruptedException {
+        //given
+        final int threadCount = 30;
+        CountDownLatch latch = new CountDownLatch(threadCount);
+        ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
+        AtomicLong userId = new AtomicLong(1L);
+        AtomicInteger successCount = new AtomicInteger(0);
+        AtomicInteger failCount = new AtomicInteger(0);
+
+        //when
+        for (int i = 0; i < threadCount; i++) {
+            executorService.execute(() -> {
+                try {
+                    reservationFacade.reserveSeat(
+                            ReservationDto.builder()
+                                          .userId(userId.getAndIncrement())
+                                          .concertScheduleId(1L)
+                                          .concertSeatIds(List.of(20L))
+                                          .build());
+                    successCount.incrementAndGet();
+                } catch (Exception e) {
+                    failCount.incrementAndGet();
+                } finally {
+                    latch.countDown();
+                }
+            });
+        }
+        latch.await();
+
+        assertEquals(threadCount - failCount.intValue(), successCount.intValue());
     }
 }

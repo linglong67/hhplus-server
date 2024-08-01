@@ -24,7 +24,6 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    @Transactional
     public User usePoint(long userId, int amount) {
         User user =  getUser(userId);
         user.usePoint(amount);
@@ -33,7 +32,7 @@ public class UserService {
     }
 
     private User getUser(long userId) {
-        return userRepository.findById(userId)
+        return userRepository.findByIdWithPessimisticLock(userId)
                              .orElseThrow(() -> new BusinessException(ErrorCode.USER_NOT_FOUND));
     }
 }

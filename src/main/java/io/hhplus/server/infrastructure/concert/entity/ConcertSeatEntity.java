@@ -21,8 +21,8 @@ public class ConcertSeatEntity {
 
     private Integer price;
 
-    @Version
-    private Integer version;
+     @Version
+     private Integer version;
 
     public static ConcertSeatEntity from(ConcertSeat seat) {
         ConcertSeatEntity entity = new ConcertSeatEntity();

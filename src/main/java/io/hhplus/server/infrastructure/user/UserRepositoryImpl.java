@@ -18,6 +18,11 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
+    public Optional<User> findByIdWithPessimisticLock(long userId) {
+        return userRepository.findByIdWithPessimisticLock(userId).map(UserEntity::toDomain);
+    }
+
+    @Override
     public User save(User user) {
         UserEntity entity = UserEntity.from(user);
         return UserEntity.toDomain(userRepository.save(entity));
