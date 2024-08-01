@@ -15,7 +15,7 @@ public class QueueVerificationInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
         String queueToken = request.getHeader("Queue-Token");
-        queueFacade.verifyQueue(queueToken);
+        queueFacade.verifyToken(queueToken);
 
         return true;
     }

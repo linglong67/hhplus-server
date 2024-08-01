@@ -14,9 +14,7 @@ public class QueueDto {
 
     public static QueueDto toDto(Queue queue, long queueOrder) {
         return QueueDto.builder()
-                       .userId(queue.getUserId())
                        .token(queue.getToken())
-                       .status(queue.getStatus().name())
                        .queueOrder(queueOrder)
                        .build();
     }

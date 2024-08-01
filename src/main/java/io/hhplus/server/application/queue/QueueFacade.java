@@ -4,50 +4,40 @@ import io.hhplus.server.domain.queue.Queue;
 import io.hhplus.server.domain.queue.QueueService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Component
 @RequiredArgsConstructor
 public class QueueFacade {
     private final QueueService queueService;
 
-    // 토큰 발급
-    @Transactional
-    public QueueDto generateToken(long userId) {
-        Queue queue = queueService.generateToken(userId);
-        long queueOrder = queueService.getQueueOrder(userId, queue.getToken());
+    // 대기열에 추가
+    public QueueDto addQueue(long userId) {
+        Queue queue = queueService.addQueue(userId);
+        long queueOrder = queueService.getQueueOrder(queue.getToken());
 
         return QueueDto.toDto(queue, queueOrder);
     }
 
-    // 토큰 조회
-    @Transactional(readOnly = true)
-    public QueueDto getQueueInfo(long userId, String token) {
-        Queue queue = queueService.getQueueInfo(userId, token);
-        long queueOrder = queueService.getQueueOrder(userId, token);
+    // 대기열 순서 조회
+    public QueueDto getQueueOrder(String token) {
+        long queueOrder = queueService.getQueueOrder(token);
 
-        return QueueDto.toDto(queue, queueOrder);
-    }
-
-    // 토큰 활성화
-    @Transactional
-    public void activateTokens() {
-        List<Queue> activateTargets = queueService.findUsersToActivate();
-        queueService.activateTokens(activateTargets);
-    }
-
-    // 토큰 만료
-    @Transactional
-    public void expireTokens() {
-        List<Queue> expireTargets = queueService.findActiveUsersForMoreThan30Minutes();
-        queueService.expireTokens(expireTargets);
+        return QueueDto.toDto(Queue.builder().token(token).build(), queueOrder);
     }
 
     // 토큰 검증
-    @Transactional(readOnly = true)
-    public void verifyQueue(String token) {
-        queueService.verifyQueue(token);
+    public void verifyToken(String token) {
+        queueService.verifyToken(token);
     }
+
+    // 토큰 활성화
+    public void activateTokens() {
+        queueService.activateTokens();
+    }
+
+    // 토큰 만료
+    public void expireTokens() {
+        queueService.expireTokens();
+    }
+
 }

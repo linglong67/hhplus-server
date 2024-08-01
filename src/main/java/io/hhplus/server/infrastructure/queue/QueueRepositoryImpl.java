@@ -1,72 +1,41 @@
 package io.hhplus.server.infrastructure.queue;
 
-import io.hhplus.server.domain.queue.Queue;
 import io.hhplus.server.domain.queue.QueueRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
-
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
 public class QueueRepositoryImpl implements QueueRepository {
-    private final QueueJpaRepository queueRepository;
+    private final QueueRedisRepository queueRepository;
 
     @Override
-    public Optional<Queue> getQueue(String token) {
-        return queueRepository.findByToken(token)
-                              .map(QueueEntity::toDomain);
+    public void addQueue(String token) {
+        queueRepository.addQueue(token);
     }
 
     @Override
-    public Optional<Queue> getQueue(long userId, String token) {
-        return queueRepository.findByUserIdAndToken(userId, token)
-                              .map(QueueEntity::toDomain);
+    public Long getQueueOrder(String token) {
+        return queueRepository.getQueueOrder(token);
     }
 
     @Override
-    public Queue save(Queue queue) {
-        QueueEntity entity = QueueEntity.from(queue);
-        return QueueEntity.toDomain(queueRepository.save(entity));
+    public Boolean verifyToken(String tokenWithTime) {
+        return queueRepository.verifyToken(tokenWithTime);
     }
 
     @Override
-    public long getLastActiveUserQueueId() {
-        Optional<QueueEntity> entity = queueRepository.findFirstByStatusIsOrderByIdDesc(Queue.Status.ACTIVE);
-        return entity.map(QueueEntity::getId).orElse(0L);
+    public void expireToken(String tokenWithTime) {
+        queueRepository.expireToken(tokenWithTime);
     }
 
     @Override
-    public List<Queue> findAllByStatusIsAndActivatedAtBefore(Queue.Status status, LocalDateTime validationTime) {
-        return queueRepository.findAllByStatusIsAndActivatedAtBefore(status, validationTime)
-                              .stream()
-                              .map(QueueEntity::toDomain)
-                              .toList();
+    public void activateTokens() {
+        queueRepository.activateTokens();
     }
 
     @Override
-    public long countAllByStatusIs(Queue.Status status) {
-        return queueRepository.countAllByStatusIs(status);
-    }
-
-    @Override
-    public List<Queue> findAllByStatusIsAndIdGreaterThanOrderByIdAsc(Queue.Status status, long lastActiveUserQueueId, PageRequest pageRequest) {
-        return queueRepository.findAllByStatusIsAndIdGreaterThanOrderByIdAsc(status, lastActiveUserQueueId, pageRequest)
-                              .stream()
-                              .map(QueueEntity::toDomain)
-                              .toList();
-    }
-
-    @Override
-    public void deleteAll() {
-        queueRepository.deleteAll();
-    }
-
-    @Override
-    public Optional<Queue> findById(Long id) {
-        return queueRepository.findById(id).map(QueueEntity::toDomain);
+    public void expireTokens() {
+        queueRepository.expireTokens();
     }
 }

@@ -23,24 +23,9 @@ public class Queue {
         EXPIRED
     }
 
-    private static final int MAX_QUEUE_SIZE = 50;
-
     public void generate(long userId) {
         this.userId = userId;
         this.token = UUID.randomUUID().toString();
         this.status = Status.WAITING;
-    }
-
-    public void activate() {
-        this.status = Status.ACTIVE;
-        this.activatedAt = LocalDateTime.now();
-    }
-
-    public void expire() {
-        this.status = Status.EXPIRED;
-    }
-
-    public static int calculateEntryLimit(int currentEntries) {
-        return MAX_QUEUE_SIZE - currentEntries;
     }
 }
