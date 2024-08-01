@@ -55,13 +55,13 @@ class ReservationIntegrationTest {
                      .token("testToken")
                      .status(Queue.Status.ACTIVE)
                      .build();
-        queue = queueService.generateToken(queue.getUserId());
-        queueService.activateTokens(List.of(queue));
+        queue = queueService.addQueue(queue.getUserId());
+        queueService.activateTokens();
 
         reservationDto = ReservationDto.builder()
                                        .userId(1L)
                                        .concertScheduleId(1L)
-                                       .concertSeatIds(List.of(1L, 2L))
+                                       .concertSeatIds(List.of(21L, 22L))
                                        .build();
 
         reservation = Reservation.builder()
