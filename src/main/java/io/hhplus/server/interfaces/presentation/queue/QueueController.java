@@ -15,14 +15,14 @@ public class QueueController {
     private final QueueFacade queueFacade;
 
     @PostMapping
-    @Operation(summary = "대기열 토큰 발급", description = "사이트 접속 시 대기열 토큰을 발급하는 API")
-    public QueueResponse generateToken(@RequestBody long userId) {
-        return QueueResponse.toResponse(queueFacade.generateToken(userId));
+    @Operation(summary = "대기열에 추가", description = "사이트 접속 시 대기열 토큰을 발급하는 API")
+    public QueueResponse addQueue(@RequestBody long userId) {
+        return QueueResponse.toResponse(queueFacade.addQueue(userId));
     }
 
     @GetMapping
-    @Operation(summary = "대기열 정보 조회", description = "특정 사용자의 대기열 정보를 조회하는 API")
-    public QueueResponse getQueueInfo(@RequestHeader("Queue-Token") String token, @RequestBody long userId) {
-        return QueueResponse.toResponse(queueFacade.getQueueInfo(userId, token));
+    @Operation(summary = "대기열 순서 조회", description = "특정 사용자의 대기열 정보를 조회하는 API")
+    public QueueResponse getQueueOrder(@RequestHeader("Queue-Token") String token, @RequestBody long userId) {
+        return QueueResponse.toResponse(queueFacade.getQueueOrder(token));
     }
 }

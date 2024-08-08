@@ -10,12 +10,12 @@ import org.springframework.stereotype.Component;
 public class QueueScheduler {
     private final QueueFacade queueFacade;
 
-    @Scheduled(fixedDelay = 3000)
+    @Scheduled(fixedDelay = 3 * 1000)
     public void activateTokens() {
         queueFacade.activateTokens();
     }
 
-    @Scheduled(fixedDelay = 10000)
+    @Scheduled(fixedDelay = 10 * 1000)
     public void expireTokens() {
         queueFacade.expireTokens();
     }

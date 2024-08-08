@@ -24,7 +24,7 @@ public class PaymentFacade {
         Payment payment = paymentService.savePayment(dto.toDomain());
         reservationService.updateReservationStatus(dto.getReservationId());
 
-        queueService.expireToken(dto.getUserId(), token);
+        queueService.expireToken(token);
         return PaymentDto.toDto(payment);
     }
 }

@@ -32,7 +32,7 @@ class PaymentIntegrationTest {
 
     @BeforeEach
     void setUp() {
-        testQueue = queueService.generateToken(2L);
+        testQueue = queueService.addQueue(2L);
     }
 
     @Test
