@@ -19,7 +19,12 @@ public class LoggingFilter implements Filter {
         ContentCachingResponseWrapper wrappedResponse = new ContentCachingResponseWrapper((HttpServletResponse) response);
 
         loggingRequest(wrappedRequest);
+
+        long startTime = System.currentTimeMillis();
         chain.doFilter(wrappedRequest, wrappedResponse);
+        long endTime = System.currentTimeMillis();
+
+        log.info("Request processing time: {}ms", endTime - startTime);
         loggingResponse(wrappedResponse);
 
         wrappedResponse.copyBodyToResponse();
