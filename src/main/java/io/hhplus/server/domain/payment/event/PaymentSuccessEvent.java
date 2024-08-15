@@ -1,5 +1,6 @@
-package io.hhplus.server.domain.payment;
+package io.hhplus.server.domain.payment.event;
 
+import io.hhplus.server.domain.payment.Payment;
 import io.hhplus.server.domain.reservation.Reservation;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
