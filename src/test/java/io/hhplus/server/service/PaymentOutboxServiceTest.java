@@ -1,8 +1,11 @@
-package io.hhplus.server.domain.payment.message;
+package io.hhplus.server.service;
 
 import io.hhplus.server.domain.common.exception.BusinessException;
 import io.hhplus.server.domain.common.exception.ErrorCode;
 import io.hhplus.server.domain.payment.Payment;
+import io.hhplus.server.domain.payment.message.PaymentOutbox;
+import io.hhplus.server.domain.payment.message.PaymentOutboxRepository;
+import io.hhplus.server.domain.payment.message.PaymentOutboxService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
