@@ -27,9 +27,13 @@ class PaymentMessageIntegrationTest {
     @Test
     @DisplayName("결제 성공 메시지 발행 시, Outbox 테이블 - PUBLISHED 상태로 업데이트 (발행 보장)")
     void guarantee_produce_success_message() {
+        //given
         long paymentId = 15L;
+
+        //when
         paymentMessageProducer.sendSuccessMessage(paymentId);
 
+        //then
         await().atMost(Duration.ofMillis(10 * 1000)).untilAsserted(() -> {
             PaymentOutbox paymentOutbox = paymentOutboxRepository.findByPaymentId(paymentId).get();
             Duration duration = Duration.between(paymentOutbox.getUpdatedAt(), LocalDateTime.now());
@@ -42,9 +46,13 @@ class PaymentMessageIntegrationTest {
     @Test
     @DisplayName("결제 성공 메시지 발행했지만, Outbox 테이블에 존재하지 않는 경우")
     void fail_produce_success_message() {
+        //given
         long paymentId = 10000L;
+
+        //when
         paymentMessageProducer.sendSuccessMessage(paymentId);
 
+        //then
         await().atMost(Duration.ofMillis(3 * 1000)).untilAsserted(() -> {
             assertThat(paymentOutboxRepository.findByPaymentId(paymentId)).isNotPresent();
         });

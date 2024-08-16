@@ -15,7 +15,7 @@ public class PaymentMessageScheduler {
     private final PaymentOutboxService paymentOutboxService;
     private final PaymentMessageProducer paymentMessageProducer;
 
-    @Scheduled(fixedDelay = 60 * 1000)
+    @Scheduled(fixedDelay = 3 * 60 * 1000)
     public void resendSuccessMessage() {
         List<PaymentOutbox> messagesForRetry = paymentOutboxService.getMessagesForRetry();
         messagesForRetry.forEach(v -> paymentMessageProducer.sendSuccessMessage(v.getPaymentId()));
