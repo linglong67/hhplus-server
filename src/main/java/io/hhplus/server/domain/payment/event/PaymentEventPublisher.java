@@ -1,4 +1,4 @@
-package io.hhplus.server.domain.payment;
+package io.hhplus.server.domain.payment.event;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationEventPublisher;

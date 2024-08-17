@@ -23,6 +23,8 @@ public enum ErrorCode {
     USER_NOT_FOUND("EU001", "존재하지 않는 사용자"),
     USER_POINT_NOT_ENOUGH("EU002", "잔액 부족"),
     USER_POINT_INVALID_VALUE("EU003", "충전/사용 포인트 < 0"),
+    // 결제 아웃박스
+    PAYMENT_OUTBOX_NOT_FOUND("EPO001", "아웃박스에 존재하지 않는 결제건"),
     ;
 
     private final String code;
