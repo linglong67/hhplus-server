@@ -1,6 +1,7 @@
-package io.hhplus.server.domain.user;
+package io.hhplus.server.interfaces.event;
 
-import io.hhplus.server.domain.payment.PaymentSuccessEvent;
+import io.hhplus.server.domain.payment.event.PaymentSuccessEvent;
+import io.hhplus.server.domain.user.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.event.TransactionPhase;
